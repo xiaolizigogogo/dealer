@@ -7,7 +7,7 @@ spring:
     application:
       name : provider
     registry:
-      address: zookeeper://uton.dealer.zookeeper1.com:2181?backup=uton.dealer.zookeeper2.com:2181,uton.dealer.zookeeper3.com:2181
+      address: zookeeper://zk:2181?backup=uton.dealer.zookeeper2.com:2181,uton.dealer.zookeeper3.com:2181
     protocol:
       name: dubbo
       port: 20880
@@ -18,13 +18,13 @@ spring:
     provider:
       timeout: 50000
   redis:
-    host: uton.dealer.redis.com
+    host: redis
     port: 6379
-    password: 123456
+    password: 
   datasource:
     continueOnError: true
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://uton.dealer.mysql.com:3306/utonpms?useUnicode=true&characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://db:3306/utonpms?useUnicode=true&characterEncoding=utf8&useSSL=false
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
