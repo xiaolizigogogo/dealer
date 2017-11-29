@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class ExcelMarkerUtil {
 
-    public static final Logger logger = LoggerFactory.getLogger(WordUtil.class);
+    public static final Logger logger = LoggerFactory.getLogger(ExcelMarkerUtil.class);
 
     private Configuration configuration = null;
 
