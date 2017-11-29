@@ -20,7 +20,7 @@
 	</properties>
 
 	<dependencies>
-			<dependency>
+		<dependency>
 			<groupId>net.logstash.logback</groupId>
 			<artifactId>logstash-logback-encoder</artifactId>
 			<version>4.11</version>
@@ -89,7 +89,7 @@
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>1.9.13</version>
 		</dependency>
-	<dependency>
+		<dependency>
 			<groupId>com.utonw</groupId>
 			<artifactId>obd-api</artifactId>
 			<version>2.5.2-SNAPSHOT</version>
@@ -115,11 +115,11 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-        </dependency>
-        		<dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.utonw</groupId>
 			<artifactId>cloan-api</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
@@ -129,8 +129,8 @@
 					<artifactId>log4j-slf4j-impl</artifactId>
 				</exclusion>
 			</exclusions>
-        		</dependency>
-    </dependencies>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<resources><!-- 使用@@站位符，输出Dockerfile至docker文件夹 -->
@@ -164,6 +164,7 @@
 				<artifactId>docker-maven-plugin</artifactId>
 				<version>0.4.13</version>
 				<configuration>
+					<skipDockerBuild>false</skipDockerBuild>
 					<imageName>${docker.registry}/${docker.registry.namespace}/${project.artifactId}:${project.version}</imageName>
 					<dockerDirectory>${project.build.directory}</dockerDirectory>
 					<resources>
