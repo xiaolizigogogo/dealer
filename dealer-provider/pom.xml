@@ -121,7 +121,7 @@
 		<dependency>
 			<groupId>com.utonw</groupId>
 			<artifactId>buyer-api</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>2.4.7-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.utonw</groupId>
