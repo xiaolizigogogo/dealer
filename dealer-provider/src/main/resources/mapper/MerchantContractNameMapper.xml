@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.utonw.dealer.mapper.MerchantContractNameMapper">
+
+	<resultMap id="BaseResultMap" type="com.utonw.dealer.api.entity.MerchantContractName">
+		<id column="id" property="id" />
+		<result column="contractName" property="contractname" />
+		<result column="contracttype" property="contracttype" />
+		<result column="ContractOrder" property="contractorder" />
+	</resultMap>
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id, contractName AS contractname, contracttype, ContractOrder AS contractorder
+    </sql>
+</mapper>

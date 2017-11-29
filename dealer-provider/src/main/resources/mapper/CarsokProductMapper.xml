@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.utonw.dealer.mapper.CarsokProductMapper">
+
+	<resultMap id="BaseResultMap" type="com.utonw.dealer.api.entity.CarsokProduct">
+		<id column="id" property="id" />
+		<result column="product_no" property="productNo" />
+		<result column="product_name" property="productName" />
+		<result column="product_descr" property="productDescr" />
+		<result column="search_key_words" property="searchKeyWords" />
+		<result column="product_short_name" property="productShortName" />
+		<result column="price" property="price" />
+		<result column="miniprice" property="miniprice" />
+		<result column="category" property="category" />
+		<result column="openid" property="openid" />
+		<result column="account_id" property="accountId" />
+		<result column="primary_pic_id" property="primaryPicId" />
+		<result column="on_shelf_status" property="onShelfStatus" />
+		<result column="sale_status" property="saleStatus" />
+		<result column="is_del" property="isDel" />
+		<result column="on_shelf_time" property="onShelfTime" />
+		<result column="off_shelf_time" property="offShelfTime" />
+		<result column="saled_people" property="saledPeople" />
+		<result column="saled_type" property="saledType" />
+		<result column="saled_price" property="saledPrice" />
+		<result column="closeingPrice" property="closeingprice" />
+		<result column="vin" property="vin" />
+		<result column="maintain_info" property="maintainInfo" />
+		<result column="business_if" property="businessIf" />
+		<result column="reserve_if" property="reserveIf" />
+		<result column="update_time" property="updateTime" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+        id, product_no AS productNo, product_name AS productName, product_descr AS productDescr, search_key_words AS searchKeyWords, product_short_name AS productShortName, price, miniprice, category, openid, account_id AS accountId, primary_pic_id AS primaryPicId, on_shelf_status AS onShelfStatus, sale_status AS saleStatus, is_del AS isDel, on_shelf_time AS onShelfTime, off_shelf_time AS offShelfTime, saled_people AS saledPeople, saled_type AS saledType, saled_price AS saledPrice, closeingPrice AS closeingprice, vin, maintain_info AS maintainInfo, business_if AS businessIf, reserve_if AS reserveIf, update_time AS updateTime, create_time AS createTime
+    </sql>
+    
+    <select id="getAgreement" resultType="com.utonw.dealer.api.dto.CarsokProductDTO" parameterType="hashmap"> 
+		SELECT DISTINCT
+			cpo.invoice,
+			cpo.c_brand as cBrand,
+			cpo.c_model as cModel,
+			cpo.miles,
+			cpo.first_up_time as firstUpTime,
+			cpo.ariable_box as ariableBox,
+			cpo.car_colour as carColour,
+			cpo.displacement,
+			cpo.indoor_type as indoorType,
+			cpo.body_structure as bodyStructure,
+			cpo.engine,
+			cpo.driving_wheel as drivingWheel,
+			cctc.tenure_carnum as tenureCarnum,
+			mr.dealer_address as dealerAddress,
+			ma.merchantName,
+			ma.licenseNumber,
+			ma.organizationCode,
+			ma.carPortNumber,
+			ma.repertoryNumber,
+			ma.scale,
+			mc.personName1,
+			mc.personName2,
+			mc.personName3,
+			mc.personName4,
+			mc.personName5,
+			cc2.contractPath,
+			cc2.id,
+			cc2.contractNum,
+			ca.merchant_descr as merchantDescr
+		FROM
+			carsok_product cp
+		LEFT JOIN carsok_pruduct_oldcar cpo ON cp.id = cpo.pruduct_id
+		LEFT JOIN (SELECT cc1.contractPath,cc1.id,cc1.contractNum,cc1.carId from car_contract cc1 WHERE cc1.contractType='contractOfPledge') as cc2 ON cc2.carId = cp.id
+		LEFT JOIN carsok_acount ca ON cp.account_id = ca.id
+		LEFT JOIN carsok_customer_trnure_car cctc ON cp.id = cctc.product_id
+		LEFT JOIN merchant_apply ma ON ca.account = ma.acountId
+		LEFT JOIN merchant_region mr ON ma.id = mr.apply_id
+		LEFT JOIN (
+			SELECT
+				acountId,
+				max(
+					CASE
+					WHEN roleName = 1 THEN
+						personName
+					END
+				) AS personName1,
+				max(
+					CASE
+					WHEN roleName = 2 THEN
+						personName
+					END
+				) AS personName2,
+				max(
+					CASE
+					WHEN roleName = 3 THEN
+						personName
+					END
+				) AS personName3,
+				max(
+					CASE
+					WHEN roleName = 4 THEN
+						personName
+					END
+				) AS personName4,
+				max(
+					CASE
+					WHEN roleName = 5 THEN
+						personName
+					END
+				) AS personName5
+			FROM
+				merchant_contactinfo
+			WHERE
+				acountId = #{acountId}
+		) mc ON mc.acountId = ca.account
+		WHERE
+			mc.acountId = #{acountId}
+		AND cp.id = #{pruductId} and mr.type = "dealer"
+		
+    </select>  
+
+    <resultMap type="com.utonw.dealer.api.dto.DealerCarDetailDTO" id="carDetailMap">
+    	<id column="id" property="carId" />
+		<result column="plateNumber" property="plateNumber" />
+		<result column="product_name" property="carName" />
+		<result column="c_brand"  property="cBrand"/>
+		<result column="c_type" property="cType"/>
+		<result column="c_model" property="cModel"/>
+		<result column="miles" property="miles"/>
+		<result column="first_up_time" property="firstUpTime"/>
+		<result column="ariable_box" property="ariableBox"/>
+		<result column="car_colour" property="carColour"/>
+		<result column="displacement" property="displacement"/>
+		<result column="engine" property="engine"/>
+    </resultMap>
+    <select id="selectDealerCarDetail" resultMap="carDetailMap">
+       select cp.id,mi.plateNumber,cp.product_name,
+		cpo.c_brand,cpo.c_model,cpo.c_type,cpo.miles,cpo.first_up_time,cpo.ariable_box,
+			cpo.car_colour,cpo.displacement,cpo.engine
+  				FROM carsok_product cp LEFT JOIN carsok_pruduct_oldcar cpo 
+  				   on cp.id=cpo.pruduct_id
+  				   	LEFT JOIN merchant_indent mi
+  				   	  on cp.id=mi.productId
+  						where cp.id=#{carId}
+    </select>
+    
+    <select id = "showProductInfoByCarId" resultType = "com.utonw.dealer.api.dto.RfidCarsProductInfoDTO">
+		SELECT
+		CPO.c_brand AS cBrand , CPO.car_colour AS carColour , MI.plateNumber AS plateNumber
+		FROM
+			carsok_product AS CP 
+		LEFT JOIN 
+			carsok_pruduct_oldcar AS CPO
+				ON CP.id = CPO.pruduct_id
+		LEFT JOIN
+			merchant_indent AS MI
+				ON MI.productId = CP.id
+		WHERE
+			CP.id = #{carId}
+    </select>
+    
+</mapper>

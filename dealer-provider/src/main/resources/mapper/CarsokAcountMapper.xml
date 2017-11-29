@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.utonw.dealer.mapper.CarsokAcountMapper">
+
+	<resultMap id="BaseResultMap" type="com.utonw.dealer.api.entity.CarsokAcount">
+		<id column="id" property="id" />
+		<result column="account_code" property="accountCode" />
+		<result column="account" property="account" />
+		<result column="account_password" property="accountPassword" />
+		<result column="nick" property="nick" />
+		<result column="mobile" property="mobile" />
+		<result column="account_type" property="accountType" />
+		<result column="pay_password" property="payPassword" />
+		<result column="is_bk" property="isBk" />
+		<result column="is_real_name_audit" property="isRealNameAudit" />
+		<result column="is_paypwd" property="isPaypwd" />
+		<result column="is_merchant_audit" property="isMerchantAudit" />
+		<result column="real_name" property="realName" />
+		<result column="idcard" property="idcard" />
+		<result column="head_portrait_path" property="headPortraitPath" />
+		<result column="business_licence_path" property="businessLicencePath" />
+		<result column="account_key" property="accountKey" />
+		<result column="merchant_name" property="merchantName" />
+		<result column="province" property="province" />
+		<result column="city" property="city" />
+		<result column="merchant_address" property="merchantAddress" />
+		<result column="merchant_descr" property="merchantDescr" />
+		<result column="merchant_image_path" property="merchantImagePath" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="quotient_score" property="quotientScore" />
+		<result column="token" property="token" />
+		<result column="inviter" property="inviter" />
+		<result column="open_id" property="openId" />
+		<result column="refresh_token" property="refreshToken" />
+		<result column="wx_nick_name" property="wxNickName" />
+		<result column="wx_headUrlString" property="wxHeadurlstring" />
+		<result column="review_time" property="reviewTime" />
+
+	</resultMap>
+	
+	<resultMap id="secondResultMap" type="com.utonw.dealer.api.entity.CarsokAcountDTO">
+		<id column="id" property="id" />
+		<result column="merchant_name" property="merchantName" />
+		<result column="mobile" property="mobile" />
+		<result column="carPortNumber" property="carPortNumber" />
+		<result column="merchant_size" property="merchantSize" />
+		<result column="maximumLoan" property="maximumLoan" />
+	</resultMap>
+	
+	<resultMap id="thiredResultMap" type="com.utonw.dealer.api.entity.MerchantDataDTO">
+		<id column="id" property="id" />
+		<result column="merchantName" property="merchantName" />
+		<result column="mobile" property="mobile" />
+		<result column="repertoryNumber" property="repertoryNumber" />
+		<result column="applyDate" property="applyDate" />
+		<result column="detailedAddress" property="detailedAddress" />
+	</resultMap>
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id, account_code AS accountCode, account, account_password AS accountPassword, nick, mobile, account_type AS accountType, pay_password AS payPassword, is_bk AS isBk, is_real_name_audit AS isRealNameAudit, is_paypwd AS isPaypwd, is_merchant_audit AS isMerchantAudit, real_name AS realName, idcard, head_portrait_path AS headPortraitPath, business_licence_path AS businessLicencePath, account_key AS accountKey, merchant_name AS merchantName, province, city, merchant_address AS merchantAddress, merchant_descr AS merchantDescr, merchant_image_path AS merchantImagePath, create_time AS createTime, update_time AS updateTime, quotient_score AS quotientScore, token, inviter, open_id AS openId, refresh_token AS refreshToken, wx_nick_name AS wxNickName, wx_headUrlString AS wxHeadurlstring, review_time AS reviewTime
+    </sql>
+    
+    <select id = "selectAcountInfoByWhere" resultMap = "secondResultMap">
+    	SELECT
+    	CA.id , MA.merchantName AS merchant_name , MA.carPortNumber , CA.merchant_size , MA.maximumLoan , CA.mobile
+    	FROM
+    	merchant_apply AS MA
+    	LEFT JOIN 
+    	carsok_acount AS CA
+    	ON CA.account = MA.acountId 
+    	<where>
+    			MA.reviewStatus = 1
+    		<if test="acountName != null and acountName != ''">
+    			AND CA.merchant_name LIKE CONCAT('%',#{acountName},'%')
+    		</if>
+    		<if test="acountMobile != null and acountMobile != ''">
+    			AND CA.mobile = #{acountMobile}
+    		</if>
+    	</where>
+    </select>
+    
+    <select id = "selectMerchantData" resultMap = "thiredResultMap">
+    	SELECT
+    	CA.id , MA.merchantName AS merchantName ,  CA.mobile , MA.repertoryNumber , MA.applyDate , MR.detailed_address AS detailedAddress
+    	FROM
+    	merchant_apply AS MA
+    	LEFT JOIN
+    	carsok_acount AS CA
+    	ON CA.account = MA.acountId
+    	LEFT JOIN
+    	merchant_region AS MR
+    	ON
+    	MA.id = MR.apply_id
+    	<where>
+    		MR.type = 'dealer'
+    		<if test="params.acountName != null and params.acountName != ''">
+    			AND MA.merchantName LIKE CONCAT('%',#{params.acountName},'%')
+    		</if>
+    		<if test="params.acountMobile != null and params.acountMobile != ''">
+    			AND CA.mobile = #{params.acountMobile}
+    		</if>
+    		<if test="params.province != null and params.province != ''">
+    			AND MR.province = #{params.province}
+    		</if>
+    		<if test="params.city != null and params.city != ''">
+    			AND MR.city = #{params.city}
+    		</if>
+    		<if test="params.district != null and params.district != ''">
+    			AND MR.district = #{params.district}
+    		</if>
+    		<if test="list != null and list.size > 0" >
+    			AND CA.id in
+			     <foreach collection="list" item="list" open="(" separator="," close=")">
+			        #{list}
+			     </foreach>
+    		</if>
+    	</where>
+    </select>
+    <select id="getIdByAccount" parameterType="java.lang.String" resultType="java.lang.String">
+    select id from carsok_acount where account=#{account}
+    </select>
+    
+</mapper>

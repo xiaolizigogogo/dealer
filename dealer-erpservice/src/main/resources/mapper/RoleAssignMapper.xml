@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.utonw.utonerp.mapper.RoleAssignMapper">
+    <resultMap id="BaseResultMap" type="com.utonw.dealer.api.entity.erp.RoleAssign">
+            <id column="ra_id" property="Id" jdbcType="INTEGER"/>
+        <result column="ra_role_id" property="roleId" jdbcType="INTEGER"/>
+        <result column="ra_user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="ra_customer_id" property="customerId" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+     ra_id,ra_role_id,ra_user_id,ra_customer_id
+    </sql>
+    <insert id="insert" parameterType="com.utonw.dealer.api.entity.erp.RoleAssign">
+        insert into role_assign 
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="Id != null">
+                ra_id,
+            </if>
+            <if test="roleId != null">
+                ra_role_id,
+            </if>
+            <if test="userId != null">
+                ra_user_id,
+            </if>
+             <if test="customerId != null">
+                ra_customer_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="Id != null">
+                #{Id,jdbcType=INTEGER},
+            </if>
+            <if test="roleId != null">
+                #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="customerId != null">
+                #{customerId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+        <!--根据用户Id和角色Id查询数据-->
+    <select id="findRoleAssignById" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from role_assign
+        where 1=1
+        <if test="roleId != null">
+            and ra_role_id = #{roleId,jdbcType=INTEGER}
+        </if>
+        <if test="customerId != null">
+            and ra_customer_id = #{customerId,jdbcType=VARCHAR}
+        </if>
+    </select>
+        <!-- 删除不存在于roleId中的数据 -->
+    <delete id="deleteNotInRole" parameterType="java.util.Map">
+        delete from role_assign
+        where ra_customer_id=#{userId,jdbcType=VARCHAR}
+        <if test="roleId.length > 0">
+            and ra_role_id not in
+            <foreach collection="roleId" item="item" separator="," open="(" close=")" index="">
+                #{item}
+            </foreach>
+        </if>
+    </delete>
+        <!--查询个人角色列表-->
+      <select id="findRoleAssignNotInRoleUser" resultMap="BaseResultMap">
+        select
+ 			 ra.* from role_assign ra INNER JOIN role_user ru on ra.ra_customer_id = ru.rb_user_id 
+        and ra.ra_role_id  not in ( select ru.rb_role_id from role_user ru where 1=1 
+        	 <if test="userId != null">
+           	 and ru.rb_user_id=#{userId,jdbcType=INTEGER}
+      		  </if>
+      		  )
+        <if test="userId != null">
+            and ra.ra_customer_id =#{userId,jdbcType=INTEGER}
+        </if>
+    </select>
+</mapper>

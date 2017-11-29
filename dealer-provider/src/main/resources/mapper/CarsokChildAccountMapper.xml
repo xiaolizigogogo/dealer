@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.utonw.dealer.mapper.CarsokChildAccountMapper">
+
+	<resultMap id="BaseResultMap" type="com.utonw.dealer.api.entity.CarsokChildAccount">
+		<id column="id" property="id" />
+		<result column="child_account_mobile" property="childAccountMobile" />
+		<result column="child_account_name" property="childAccountName" />
+		<result column="account_phone" property="accountPhone" />
+		<result column="alias" property="alias" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="regionId" property="regionid" />
+	</resultMap>
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id, child_account_mobile AS childAccountMobile, child_account_name AS childAccountName, account_phone AS accountPhone, alias, create_time AS createTime, update_time AS updateTime,regionId AS regionid
+    </sql>
+</mapper>

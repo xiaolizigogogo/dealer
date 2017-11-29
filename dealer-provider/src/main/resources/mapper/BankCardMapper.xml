@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.utonw.dealer.mapper.BankCardMapper">
+
+	<resultMap id="BaseResultMap" type="com.utonw.dealer.api.entity.BankCard">
+		<id column="id" property="id" />
+		<result column="acount_id" property="acountId" />
+		<result column="cardholder" property="cardholder" />
+		<result column="bankName" property="bankname" />
+		<result column="cardType" property="cardtype" />
+		<result column="bankNumber" property="banknumber" />
+		<result column="createdData" property="createddata" />
+		<result column="updateTime" property="updatetime" />
+		<result column="cardState" property="cardstate" />
+		<result column="updateBy" property="updateby" />
+	</resultMap>
+
+	<resultMap extends="BaseResultMap" id="ResultMapWithMerchantApply" type="com.utonw.dealer.api.dto.BankCardAndMerchantDTO">
+		<result column="meracountid" property="meracountid" />
+		<result column="merchantName" property="merchantName" />
+	</resultMap>
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id, acount_id AS acountId, cardholder, bankName AS bankname, cardType AS cardtype, bankNumber AS banknumber, createdData AS createddata, updateTime AS updatetime, cardState AS cardstate, updateBy AS updateby
+    </sql>
+
+	<select id="selectCustomerBankInfo" parameterType="java.util.Map" resultMap="BaseResultMap">
+		SELECT bc.*
+		FROM bank_card bc
+		<if test="condition !=null and condition != ''">
+			<if test="condition == 1">
+				WHERE bc.acount_id = #{accountId}
+			</if>
+			<if test="condition == 2">
+				INNER JOIN merchant_apply ma ON ma.acountId = bc.acount_id
+				INNER JOIN merchant_indent mi ON mi.acount_id = bc.acount_id
+				WHERE mi.id = #{id}
+			</if>
+		</if>
+		GROUP BY bc.cardState
+	</select>
+
+	<select id="selectMerchantBankCard" parameterType="java.util.Map" resultMap="ResultMapWithMerchantApply">
+		SELECT
+			bc.id, acount_id AS acountId, bc.cardholder, bankName AS bankname, bc.cardType AS cardtype,
+			bc.bankNumber AS banknumber, bc.createdData AS createddata, bc.updateTime AS updatetime,
+			bc.cardState AS cardstate, bc.updateBy AS updateby, ma.acountId AS meracountid, ma.merchantName AS merchantname
+		FROM bank_card bc
+		INNER JOIN merchant_apply ma ON ma.acountId = bc.acount_id
+		<where>
+			<if test="merchantName != null and merchantName != ''">
+				AND ma.merchantName LIKE CONCAT('%', #{merchantName}, '%')
+			</if>
+			<if test="bankName != null and bankName != ''">
+				AND bc.bankName = LIKE CONCAT('%', #{bankName}, '%')
+			</if>
+		</where>
+		GROUP BY bc.acount_id
+		ORDER BY bc.createdData
+	</select>
+</mapper>

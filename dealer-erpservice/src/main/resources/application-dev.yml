@@ -1,0 +1,91 @@
+server:
+      port: 9080
+      tomcat:
+        max-threads: 800                # tomcat最大线程数，默认为200
+        uri-encoding: UTF-8             # tomcat的URI编码
+        basedir: /springboot-tomcat-tmp # 存放Tomcat的日志、Dump等文件的临时文件夹，默认为系统的tmp文件夹（如：C:\Users\Shanhy\AppData\Local\Temp）
+        accesslog:
+          enabled: true                 # 打开Tomcat的Access日志，并可以设置日志格式的方法：
+                                        #server.tomcat.access-log-pattern=
+                                        # accesslog目录，默认在basedir/logs
+logging:
+  config: classpath:logback.xml                                   #server.tomcat.accesslog.directory=
+spring:
+  dubbo:
+    application:
+      name : sysservice
+    registry:
+      address: zookeeper://39.106.9.230:2181
+    protocol:
+      name: dubbo
+      port: 20887
+      serialization: hessian2
+    scan: com.utonw
+    consumer:
+      timeout: 50000
+    provider:
+      timeout: 50000
+  jedis:
+    database: 0
+    host: 192.168.1.171
+    port: 6379
+    password: 123456
+    pool:
+      config:
+        maxactive: 8
+        maxwait: -1
+        maxtotal: 8
+        minidle: 0
+    timeout: 0
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.1.133:3306/clm_csd2?allowMultiQueries=true&useUnicode=true&characterEncoding=utf8&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8
+    username: root
+    password: 1234
+    druid:
+        initial-size: 10
+        max-active: 100
+        min-idle: 10
+        max-wait: 60000
+        pool-prepared-statements: true
+        max-pool-prepared-statement-per-connection-size: 20
+        time-between-eviction-runs-millis: 60000
+        min-evictable-idle-time-millis: 300000
+        validation-query: SELECT 1 FROM DUAL
+        test-while-idle: true
+        test-on-borrow: false
+        test-on-return: false
+        stat-view-servlet:
+            enabled: true
+            url-pattern: /druid/*
+        filter:
+            stat:
+                log-slow-sql: true
+                slow-sql-millis: 1000
+                merge-sql: true
+            wall:
+                config:
+                    multi-statement-allow: true
+    dbcp2:
+      initialSize: 5
+      minIdle: 5
+      maxActive: 20
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      max-open-prepared-statements: 20
+
+mybatis:
+  typeAliasesPackage: com.utonw.utonerp.entity
+  mapperLocations: classpath*:mapper/*.xml
+  configuration:
+   map-underscore-to-camel-case: true
+   use-generated-keys: true
+   default-fetch-size: 100
+   default-statement-timeout: 30

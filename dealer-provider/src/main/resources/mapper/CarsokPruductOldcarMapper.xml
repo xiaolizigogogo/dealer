@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.utonw.dealer.mapper.CarsokPruductOldcarMapper">
+    <resultMap id="BaseResultMap" type="com.utonw.dealer.api.entity.CarsokPruductOldcar">
+        <id column="id" property="id" />
+        <result column="pruduct_id" property="pruductId" />
+        <result column="c_brand" property="cBrand" />
+        <result column="c_type" property="cType" />
+        <result column="c_model" property="cModel" />
+        <result column="province" property="province" />
+        <result column="city" property="city" />
+        <result column="miles" property="miles" />
+        <result column="first_up_time" property="firstUpTime" />
+        <result column="linkman" property="linkman" />
+        <result column="linkphone" property="linkphone" />
+        <result column="browse_num_times" property="browseNumTimes" />
+        <result column="tel_num_times" property="telNumTimes" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="browse_num_times_fake" property="browseNumTimesFake" />
+        <result column="miniprice" property="miniprice" />
+        <result column="price" property="price" />
+        <result column="sale_days" property="saleDays" />
+        <result column="car_plate" property="carPlate" />
+        <result column="payment_method" property="paymentMethod" />
+        <result column="system_assess" property="systemAssess" />
+        <result column="buyprice" property="buyprice" />
+        <result column="hostling_cost" property="hostlingCost" />
+        <result column="condition" property="condition" />
+        <result column="remark" property="remark" />
+        <result column="ariable_box" property="ariableBox" />
+        <result column="car_colour" property="carColour" />
+        <result column="displacement" property="displacement" />
+        <result column="indoor_type" property="indoorType" />
+        <result column="body_structure" property="bodyStructure" />
+        <result column="engine" property="engine" />
+        <result column="driving_wheel" property="drivingWheel" />
+        <result column="invoice" property="invoice" />
+    </resultMap>
+    <resultMap id="BaseResultCarMessage" type="com.utonw.dealer.api.entity.CarMessage">
+        <result column="productId" property="product_id" />
+        <result column="first_up_time" property="first_up_time" />
+        <result column="miles" property="miles" />
+        <result column="miniprice" property="miniprice" />
+        <result column="price" property="price" />
+        <result column="indentState" property="indentState" />
+        <result column="browse_num_times" property="browse_num_times" />
+        <result column="tel_num_times" property="tel_num_times" />
+        <result column="c_brand" property="c_brand" />
+        <result column="c_model" property="c_model" />
+        <result column="c_type" property="c_type" />
+        <result column="pic_path" property="pic_path" />
+        <result column="on_shelf_time" property="on_shelf_time" />
+        <result column="off_shelf_time" property="off_shelf_time" />
+        <result column="judgeMoney" property="judgeMoney" />
+        <result column="vin" property="vin" />
+        <result column="id" property="id" />
+        <result column="closeingPrice" property="closeingPrice" />
+        <result column="zbMoney" property="zbMoney" />
+        <result column="whetherPass" property="whetherPass" />
+        <result column="rejectRemarks" property="rejectRemarks" />
+    </resultMap>
+   <resultMap id="BaseResultCarCapital" type="com.utonw.dealer.api.entity.CarCapitalDetails">
+        <result column="c_brand" property="c_brand" />
+        <result column="c_type" property="c_type" />
+        <result column="c_model" property="c_model" />
+        <result column="miles" property="miles" />
+        <result column="first_up_time" property="first_up_time" />
+        <result column="miniprice" property="miniprice" />
+        <result column="price" property="price" />
+        <result column="buyprice" property="buyprice" />
+        <result column="systemAssess" property="systemAssess" />
+        <result column="hostlingCost" property="hostlingCost" />
+        <result column="loanLimit" property="loanLimit" />
+        <result column="evaluationTime" property="evaluationTime" />
+        <result column="deadlineTime" property="deadlineTime" />
+        <result column="limitPercentage" property="limitPercentage" />
+        <result column="monthlyInterest" property="monthlyInterest" />
+       <result column="applyMoney" property="applyMoney" />
+       <result column="judgeMoney" property="judgeMoney" />
+       <result column="indentNumber" property="indentNumber" />
+       <result column="pic_path" property="pic_path" />
+    </resultMap>
+
+    <resultMap id="BaseResultCarDetails" type="com.utonw.dealer.api.entity.CarDetails">
+        <result column="c_brand" property="c_brand" />
+        <result column="c_type" property="c_type" />
+        <result column="c_model" property="c_model" />
+        <result column="province" property="province" />
+        <result column="miles" property="miles" />
+        <result column="first_up_time" property="first_up_time" />
+        <result column="miniprice" property="miniprice" />
+        <result column="price" property="price" />
+        <result column="systemAssess" property="systemAssess" />
+        <result column="buyprice" property="buyprice" />
+        <result column="hostlingCost" property="hostlingCost" />
+        <result column="real_name" property="real_name" />
+    </resultMap>
+
+
+
+    <resultMap id="BaseResultAssess" type="com.utonw.dealer.api.entity.Assess">
+        <result column="indentNumber" property="indentNumber" />
+        <result column="product_name" property="product_name" />
+        <result column="merchant_name" property="merchant_name" />
+        <result column="province" property="province" />
+        <result column="city" property="city" />
+        <result column="merchant_address" property="merchant_address" />
+        <result column="mobile" property="mobile" />
+        <result column="car_plate" property="car_plate" />
+        <result column="miles" property="miles" />
+        <result column="payment_method" property="payment_method" />
+        <result column="on_shelf_time" property="on_shelf_time" />
+        <result column="systemAssess" property="systemAssess" />
+        <result column="buyprice" property="buyprice" />
+        <result column="hostlingCost" property="hostlingCost" />
+        <result column="merchantId" property="merchantId" />
+        <result column="vin" property="vin" />
+        <result column="condition" property="condition" />
+        <result column="remark" property="remark" />
+        <result column="ariable_box" property="ariable_box" />
+        <result column="car_colour" property="car_colour" />
+        <result column="displacement" property="displacement" />
+        <result column="body_structure" property="body_structure" />
+        <result column="indoor_type" property="indoor_type" />
+        <result column="engine" property="engine" />
+        <result column="driving_wheel" property="driving_wheel" />
+        <result column="invoice" property="invoice" />
+        <result column="travelLicense" property="travelLicense" />
+        <result column="commercial" property="commercial" />
+        <result column="leaveProvince" property="leaveProvince" />
+        <result column="appraisersPrice" property="appraisersPrice" />
+    </resultMap>
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id, pruduct_id AS pruductId, c_brand AS cBrand, c_type AS cType, c_model AS cModel, province, city, miles, first_up_time AS firstUpTime, linkman, linkphone, browse_num_times AS browseNumTimes, tel_num_times AS telNumTimes, create_time AS createTime, update_time AS updateTime, browse_num_times_fake AS browseNumTimesFake, miniprice, price, sale_days AS saleDays, car_plate AS carPlate, payment_method AS paymentMethod, system_assess AS systemAssess, buyprice, hostling_cost AS hostlingCost, condition, remark, ariable_box AS ariableBox, car_colour AS carColour, displacement, indoor_type AS indoorType, body_structure AS bodyStructure, engine, driving_wheel AS drivingWheel, invoice
+    </sql>
+	<select id="selectByIdCar" parameterType="java.lang.String" resultMap="BaseResultAssess">
+	
+	SELECT
+      DISTINCT
+          cp.product_name,              -- 车名称
+            ca.merchant_name,           -- 商户名称
+            ca.province,                -- 商户所在省份
+            ca.city,                    -- 商户所在市
+            ca.merchant_address,        -- 商户详细地址
+            ca.mobile,                  -- 商户电话
+            cpo.miles,          -- 车辆里程（单位：公里）
+            cp.on_shelf_time,     -- 首次上牌日
+            es.systemAssess,  -- 系统评估价
+            es.buyprice,   -- 手车价
+            es.hostlingCost, -- 整备价
+           mi.indentNumber, -- 订单编号
+           cp.vin,
+          es.condition, -- 车况评估
+          es.remark, -- 评估师点评
+          cpo.ariable_box, -- 变数箱
+          cpo.car_colour, -- 颜色
+          cpo.displacement, -- 排量
+          cpo.body_structure, -- 车身结构
+          cpo.indoor_type, -- 室内装置
+          cpo.engine, -- 发动机
+           cpo.driving_wheel, -- 驱动轮
+           cpo.invoice, -- 发票价
+           es.travelLicense, -- 行驶证(0:否 1：是)
+           es.commercial, -- 商业全险(0:否 1：是) ',
+           es.leaveProvince,-- 离省(0:否 1：是)
+           es.appraisersPrice
+         FROM merchant_indent mi
+        LEFT JOIN carsok_acount ca on mi.acount_id = ca.account
+        LEFT JOIN carsok_product cp ON ca.id = cp.account_id AND mi.productId =cp.id
+        LEFT JOIN carsok_pruduct_oldcar cpo ON cp.id = cpo.pruduct_id
+        LEFT JOIN evaluation_sheet es ON mi.id = es.indentId
+        WHERE mi.id =#{indentId}
+   </select>
+
+    <select id="queryCarList" parameterType="map" resultMap="BaseResultCarMessage">
+        SELECT dd.indentState,c.c_type,c.c_model,c.c_brand,c.first_up_time,c.miles,cl.miniprice,cl.price,c.browse_num_times,c.tel_num_times,tp.pic_path,dd.productId, cl.on_shelf_time,
+        cl.off_shelf_time,dd.judgeMoney,dd.id,
+        dd.whetherPass,
+        dd.rejectRemarks
+        FROM merchant_indent dd
+        INNER JOIN carsok_pruduct_oldcar c ON dd.productId = c.pruduct_id
+        LEFT JOIN carsok_product cl on dd.productId = cl.id
+        LEFT JOIN carsok_picture tp ON dd.productId =tp.product_id  WHERE dd.acount_id = #{acountId}
+        <if test="indentState==3">
+            and dd.indentState IN ('repayment_end','dismantling','distrution_user_dismantling')
+        </if>
+        <if test="indentState==2">
+          and (dd.indentState not in  ('repayment_end','dismantling','distrution_user_dismantling') or dd.indentState  is null)
+        </if>
+        <if test="productName != null">
+            AND cl.product_name LIKE CONCAT('%', #{productName}, '%')
+        </if>
+        GROUP BY productId order by dd.createdTime desc
+
+    </select>
+   <select id="queryCarCapital" parameterType="java.lang.Integer" resultMap="BaseResultCarCapital">
+   SELECT DISTINCT
+	c.c_brand,
+	c.c_type,
+	c.c_model,
+	c.first_up_time,
+	c.miles,
+	cp.miniprice,
+	cp.price,
+	pg.loanLimit,
+	pg.evaluationTime,
+	pg.systemAssess,
+	pg.buyprice,
+	pg.hostlingCost,
+	sq.limitPercentage,
+	sq.monthlyInterest,
+	dd.deadlineTime,
+	dd.judgeMoney,
+	dd.productId,
+	dd.acount_id,
+	dd.applyMoney,
+	dd.indentNumber,
+    cpi.pic_path
+FROM
+	evaluation_sheet pg
+LEFT JOIN merchant_apply sq ON pg.acountId = sq.acountId
+LEFT JOIN merchant_indent dd ON pg.acountId = dd.acount_id
+LEFT JOIN carsok_product cp ON pg.pruductId = cp.id
+LEFT JOIN carsok_pruduct_oldcar c ON pg.pruductId = c.pruduct_id
+LEFT JOIN carsok_picture cpi ON cp.id =cpi.product_id
+    WHERE pg.pruductId = #{id} AND dd.productId=#{id}
+    AND cpi.type ='1'
+    </select>
+
+    <select id="queryCarDetails" parameterType="java.lang.Integer" resultMap="BaseResultCarDetails">
+       SELECT c.c_brand,c.c_model,c.c_type,c.first_up_time,c.miles,cp.miniprice,cp.price,c.province,pg.systemAssess,pg.buyprice,pg.hostlingCost,sh.real_name
+        FROM  carsok_pruduct_oldcar c
+        LEFT JOIN evaluation_sheet pg ON c.pruduct_id = pg.pruductId
+        LEFT JOIN carsok_product cp ON  c.pruduct_id = cp.id
+        LEFT JOIN carsok_acount sh on pg.acountId = sh.account_code
+        WHERE c.pruduct_id=#{id}
+    </select>
+
+	<select id="selectCarInfo" parameterType="java.lang.String" resultType="com.utonw.dealer.api.entity.CarsokPruductOldcar">
+		SELECT cpo.c_brand,cpo.c_model,cpo.miles,cpo.first_up_time,mi.plateNumber AS car_plate,
+			 cpo.ariable_box,cpo.engine,cpo.indoor_type,cpo.body_structure,
+			 cpo.car_colour,cpo.driving_wheel,cpo.invoice,cpo.displacement,cpo.id
+		FROM merchant_indent mi
+		INNER JOIN carsok_pruduct_oldcar cpo ON cpo.pruduct_id = mi.productId
+		WHERE mi.id = #{id}
+	</select>
+
+    <select id="queryCarListOne" parameterType="java.lang.String" resultMap="BaseResultCarMessage">
+
+        SELECT
+        c.c_type,
+        c.c_model,
+        c.c_brand,
+        c.first_up_time,
+        c.miles,
+        cl.miniprice,
+        cl.price,
+        c.browse_num_times,
+        c.tel_num_times,
+        cl.id AS productId,
+        tp.pic_path,
+        cl.on_shelf_time,
+        cl.off_shelf_time,
+        cl.vin,
+        cl.closeingPrice,
+        cztz.zbMoney,
+        mi.id,
+        mi.whetherPass,
+        mi.rejectRemarks
+        FROM
+        carsok_acount cs
+        INNER JOIN carsok_product cl ON cs.id = cl.account_id
+        LEFT JOIN carsok_pruduct_oldcar c ON cl.id = c.pruduct_id
+        LEFT JOIN carsok_picture tp ON cl.id = tp.product_id
+        LEFT JOIN carsok_zb_task czt ON czt.product_id = cl.id
+        LEFT JOIN carsok_zb_task_zby cztz ON czt.id = cztz.tid
+        LEFT JOIN merchant_indent mi ON cs.account = mi.acount_id
+    WHERE
+        cs.account_code = #{param1}  AND cl.sale_status ='0' AND
+        cl.id NOT IN (
+            SELECT
+                productId
+            FROM
+                merchant_indent
+            WHERE
+                acount_id = #{param1}
+        )  AND cl.on_shelf_status = '1'  AND cl.is_del='0'  and ( mi.whetherPass is null or mi.whetherPass !='nopass')
+        <if test="param2 != null">
+            AND cl.product_name LIKE CONCAT('%', #{param2}, '%')
+        </if>
+    GROUP BY tp.product_id Order By mi.createdTime Desc
+    </select>
+
+</mapper>

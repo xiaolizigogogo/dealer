@@ -1,0 +1,27 @@
+server:
+      port: 7777
+spring: 
+  http:
+    encoding:
+      force: true
+  dubbo: 
+    application:
+      name : buyer-consumer
+    registry:
+      address: zookeeper://127.0.0.1:2181
+#      file: /home/wangyj/dubbo_registy/consumer
+    scan: com.utonw
+    consumer:
+      timeout: 50000
+    provider:
+      timeout: 50000
+  redis:
+    host: 123.56.236.206
+    port: 6379
+    password: 123456
+logging: 
+  path: /springboot-tomcat-tmp          # 日志文件目录
+  file: dealer-web.log                       # 日志文件名称，默认为spring.log
+  config: classpath:logback.xml 
+    
+profile: formal_envrimont

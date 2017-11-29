@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.utonw.dealer.mapper.MerchantContactinfoMapper">
+
+	<resultMap id="BaseResultMap" type="com.utonw.dealer.api.entity.MerchantContactinfo">
+		<id column="id" property="id" />
+		<result column="acountId" property="acountid" />
+		<result column="personName" property="personname" />
+		<result column="phoneNumber" property="phonenumber" />
+		<result column="roleName" property="rolename" />
+	</resultMap>
+	<resultMap id="BaseResultTaskInfo" type="com.utonw.dealer.api.entity.TaskInfoEntity">
+		<result column="id" property="id" />
+		<result column="account" property="accountId" />
+		<result column="merchant_name" property="merchantname" />
+		<result column="merchant_address" property="merchantaddress" />
+		<result column="province" property="province" />
+		<result column="city" property="city" />
+		<result column="mobile" property="mobile" />
+		<result column="applyDate" property="applydate" />
+		<result column="reviewStatus" property="reviewStatus" />
+		<result column="taskName" property="taskname" />
+		<result column="roleId" property="roleId" />
+		<result column="total" property="total" />
+		<result column="indentId" property="indentId" />
+		<result column="taskAssigee" property="taskAssigee" />
+		<result column="applyState" property="applyState" />
+
+	</resultMap>
+
+    <!-- 通用查询结果列-->
+
+
+
+    <sql id="Base_Column_List">
+        id, acountId AS acountid, personName AS personname, phoneNumber AS phonenumber, roleName AS rolename
+    </sql>
+	<select id="queryTaskList" resultMap="BaseResultTaskInfo"  parameterType="java.util.Map" >
+		SELECT
+        ca.merchant_name,
+		mr.detailed_address as merchant_address,
+		ca.province,
+		ca.city,
+		ca.mobile,
+		ca.account,
+		ma.applyDate,
+		ma.reviewStatus,
+		ma.id,
+		ma.applyState
+		FROM
+		merchant_apply ma
+		LEFT JOIN carsok_acount ca ON ca.account = ma.acountId
+		LEFT JOIN merchant_region mr on ma.id =  mr.apply_id
+		<where>
+		<if test="lists.size()==0">
+			AND 1 = 0
+		</if>
+	  <if test="lists.size()>0">
+		AND ma.id IN <foreach collection="lists" item="lists" separator="," open="(" close=")">#{lists}</foreach>
+	  </if>
+		<if test="merchantName!=null and merchantName != ''">
+			AND ca.merchant_name =#{merchantName}
+		</if>
+			AND mr.type='dealer'
+	</where>
+		order by applyDate DESC
+	</select>
+	<select id="queryIndentTask" resultMap="BaseResultTaskInfo">
+		SELECT
+		ca.merchant_name,
+		maa.detailed_address as merchant_address,
+		ca.province,
+		ca.city,
+		ca.mobile,
+		ca.account,
+		ma.createdTime AS applyDate,
+		ma.id,
+		ma.indentState AS applyState,
+        COUNT(1) AS total
+		FROM
+		merchant_indent ma
+		LEFT JOIN carsok_acount ca ON ca.account = ma.acount_id left join (select mr.*,mal.acountId from merchant_apply mal inner join  merchant_region mr ON
+		mal.id =  mr.apply_id WHERE mr.type='dealer') as maa ON  ma.acount_id = maa.acountId
+		<where>
+			<if test="indentId.size()==0">
+				AND 1 = 0
+			</if>
+			<if test="indentId.size()>0">
+				AND ma.id IN <foreach collection="indentId" item="indentId" separator="," open="(" close=")">#{indentId}</foreach>
+			</if>
+			<if test="merchantName!=null and merchantName != '' ">
+				AND ca.merchant_name =#{merchantName}
+			</if>
+		</where>
+		GROUP BY ca.merchant_name
+		order by createdTime DESC
+	</select>
+</mapper>

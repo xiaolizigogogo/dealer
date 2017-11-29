@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.utonw.utonerp.mapper.RepaymentMapper">
+    <resultMap id="BaseResultMap" type="com.utonw.dealer.api.entity.erp.Repayment">
+
+        <id column="uuid" property="uuid" jdbcType="VARCHAR"/>
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="loanId" property="loanid" jdbcType="VARCHAR"/>
+        <result column="repaymentImagUrl" property="repaymentimagurl" jdbcType="VARCHAR"/>
+        <result column="replanDetaiId" property="replandetaiid" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="createDate" property="createdate" jdbcType="TIMESTAMP"/>
+        <result column="updateDate" property="updatedate" jdbcType="TIMESTAMP"/>
+        <result column="repaymentType" property="repaymentType" jdbcType="VARCHAR"/>
+        <result column="processinsId" property="processinsId" jdbcType="VARCHAR"/>
+		<result column="is_overdue" property="is_overdue" jdbcType="INTEGER"/>
+        <result column="updateDay" property="updateDay" jdbcType="TIMESTAMP"/>
+        <association property="loanInfoAttachment"
+                     javaType="com.utonw.dealer.api.entity.erp.LoanInfoAttachment"
+                     column="loan_id">
+            <result column="attachment_type" jdbcType="VARCHAR" property="attachmentType"/>
+            <result column="attachment_title" jdbcType="VARCHAR" property="attachmentTitle"/>
+            <result column="attachment_thumb" jdbcType="VARCHAR" property="attachmentThumb"/>
+            <result column="attachment_path" jdbcType="VARCHAR" property="attachmentPath"/>
+        </association>
+
+        <association property="repayPlanDetail" javaType="com.utonw.dealer.api.entity.erp.RepayPlanDetail"
+                     column="replanDetaiId">
+            <result column="repayPeriod" jdbcType="INTEGER" property="repayPeriod"/>
+            <result column="repayCapital" jdbcType="DECIMAL" property="repayCapital"/>
+            <result column="repayInterest" jdbcType="DECIMAL" property="repayInterest"/>
+            <result column="repayTotal" jdbcType="DECIMAL" property="repayTotal"/>
+        </association>
+
+        <!--<association property="repaymentTransaction"-->
+        <!--javaType="com.utonw.dealer.api.entity.erp.RepaymentTransaction" column="transactionId">-->
+        <!--<result column="actualRepaymentCaptialSum" jdbcType="DECIMAL"-->
+        <!--property="actualRepaymentCaptialSum"/>-->
+        <!--<result column="actualRepaymentInterestSum" jdbcType="DECIMAL"-->
+        <!--property="actualRepaymentInterestSum"/>-->
+        <!--<result column="actualRepaymentSum" jdbcType="DECIMAL" property="actualRepaymentSum"/>-->
+        <!--<result column="actalRepaymentFee" jdbcType="DECIMAL" property="actalRepaymentFee"/>-->
+        <!--<result column="createDay" property="createDay" jdbcType="TIMESTAMP"/>-->
+        <!--</association>-->
+
+        <collection ofType="com.utonw.dealer.api.entity.erp.RepaymentTransaction"
+                    property="repaymentTransactions">
+            <result column="actualRepaymentCaptialSum" jdbcType="DECIMAL"
+                    property="actualRepaymentCaptialSum"/>
+            <result column="actualRepaymentInterestSum" jdbcType="DECIMAL"
+                    property="actualRepaymentInterestSum"/>
+            <result column="actualRepaymentSum" jdbcType="DECIMAL" property="actualRepaymentSum"/>
+            <result column="actalRepaymentFee" jdbcType="DECIMAL" property="actalRepaymentFee"/>
+            <result column="createDay" property="createDay" jdbcType="TIMESTAMP"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="CommissionVo" type="com.utonw.dealer.api.vo.CommissionVo">
+    </resultMap>
+    <sql id="Base_Column_List">
+        uuid, id, loanId, repaymentImagUrl, replanDetaiId, status, remark,
+        name, createDate, updateDate,repaymentType,processinsId,is_overdue
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from repayment
+        where uuid = #{uuid,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from repayment
+        where uuid = #{uuid,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.utonw.dealer.api.entity.erp.Repayment">
+        insert into repayment (uuid, id, loanId,
+        repaymentImagUrl, replanDetaiId,
+        status, remark, name, createDate,
+        updateDate,repaymentType,processinsId)
+        values (#{uuid,jdbcType=VARCHAR}, #{id,jdbcType=INTEGER}, #{loanid,jdbcType=VARCHAR},
+        #{repaymentimagurl,jdbcType=VARCHAR}, #{replandetaiid,jdbcType=VARCHAR},
+        #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+        #{createdate,jdbcType=TIMESTAMP},
+        #{updatedate,jdbcType=TIMESTAMP},#{repaymentType,jdbcType=VARCHAR},#{processinsId,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.utonw.dealer.api.entity.erp.Repayment">
+        insert into repayment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">
+                uuid,
+            </if>
+            <if test="id != null">
+                id,
+            </if>
+            <if test="loanid != null">
+                loanId,
+            </if>
+            <if test="repaymentimagurl != null">
+                repaymentImagUrl,
+            </if>
+            <if test="replandetaiid != null">
+                replanDetaiId,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="createdate != null">
+                createDate,
+            </if>
+            <if test="updatedate != null">
+                updateDate,
+            </if>
+            <if test="repaymentType != null">
+                repaymentType,
+            </if>
+            <if test="processinsId != null">
+                processinsId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">
+                #{uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="loanid != null">
+                #{loanid,jdbcType=VARCHAR},
+            </if>
+            <if test="repaymentimagurl != null">
+                #{repaymentimagurl,jdbcType=VARCHAR},
+            </if>
+            <if test="replandetaiid != null">
+                #{replandetaiid,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="createdate != null">
+                #{createdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedate != null">
+                #{updatedate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="repaymentType != null">
+                #{repaymentType,jdbcType=VARCHAR},
+            </if>
+            <if test="processinsId != null">
+                #{processinsId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.utonw.dealer.api.entity.erp.Repayment">
+        update repayment
+        <set>
+            <if test="id != null">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="loanid != null">
+                loanId = #{loanid,jdbcType=VARCHAR},
+            </if>
+            <if test="repaymentimagurl != null">
+                repaymentImagUrl = #{repaymentimagurl,jdbcType=VARCHAR},
+            </if>
+            <if test="replandetaiid != null">
+                replanDetaiId = #{replandetaiid,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="createdate != null">
+                createDate = #{createdate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedate != null">
+                updateDate = #{updatedate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="repaymentType != null">
+                repaymentType = #{repaymentType,jdbcType=VARCHAR},
+            </if>
+            <if test="processinsId != null">
+                processinsId = #{processinsId,jdbcType=VARCHAR},
+            </if>
+            <if test="is_overdue != null">
+                is_overdue = #{is_overdue,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where uuid = #{uuid,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.utonw.dealer.api.entity.erp.Repayment">
+        update repayment
+        set id = #{id,jdbcType=INTEGER},
+        loanId = #{loanid,jdbcType=VARCHAR},
+        repaymentImagUrl = #{repaymentimagurl,jdbcType=VARCHAR},
+        replanDetaiId = #{replandetaiid,jdbcType=VARCHAR},
+        status = #{status,jdbcType=INTEGER},
+        remark = #{remark,jdbcType=VARCHAR},
+        name = #{name,jdbcType=VARCHAR},
+        createDate = #{createdate,jdbcType=TIMESTAMP},
+        updateDate = #{updatedate,jdbcType=TIMESTAMP},
+        repaymentType = #{repaymentType,jdbcType=VARCHAR},
+        processinsId = #{processinsId,jdbcType=VARCHAR},
+          is_overdue = #{is_overdue,jdbcType=VARCHAR}
+        where uuid = #{uuid,jdbcType=VARCHAR}
+    </update>
+    <select id="selectHaveRepaymentDetailByLoanId" parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        <![CDATA[
+
+        SELECT
+            ry.id, ry.uuid,ry.loanId,ry.repaymentImagUrl, ry.replanDetaiId,
+            ry.status, ry.createDate,rt.actualRepaymentCaptialSum, rt.actualRepaymentInterestSum,
+            rt.actualRepaymentSum, rt.actalRepaymentFee,ry.processinsId
+        FROM
+            repayment ry
+        LEFT JOIN repaymenttransaction rt ON ry.uuid = rt.repaymentId
+        LEFT JOIN loan_info li ON ry.loanId = li.uuid
+        LEFT JOIN repayplandetail rpd ON ry.replanDetaiId = rpd.id
+        WHERE li.uuid = #{loanId}
+        ]]>
+        <if test="array != null">
+            AND ry.status IN
+            <foreach item="item" collection="array" open="(" separator="," close=")"
+                     index="index">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+
+    <!--根据还款明细id查询还款-->
+    <select id="selectRepaymentByDetailId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from repayment
+        where replanDetaiId = #{replanDetaiId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectActualRepaymentDetail" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+            r.uuid,
+	        r.uuid loan_id,
+            r.name,
+            r.createDate,
+            r.status,
+            r.replanDetaiId,
+            rpd.repayPeriod,
+            rpt.actualRepaymentCaptialSum,
+            rpt.actualRepaymentInterestSum,
+            rpt.actualRepaymentSum,
+            rpt.actalRepaymentFee,
+            rpt.createDay,
+            lia.attachment_type,
+            lia.attachment_title,
+            lia.attachment_thumb,
+            lia.attachment_path,
+            rpt.updateDay
+        FROM
+            repayment r
+        LEFT JOIN repayplandetail rpd ON replanDetaiId = rpd.id
+        LEFT JOIN repaymenttransaction rpt ON r.uuid = rpt.repaymentId
+        LEFT JOIN loan_info_attachment lia ON r.uuid = lia.loan_id AND IFNULL(lia.is_valid,0) = 1
+        WHERE r.loanId = #{loanId}
+        ORDER BY rpd.repayPeriod ASC
+    </select>
+
+
+    <!-- 根据借款id查询-->
+    <select id="selectByLoanId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from repayment
+        where loanId = #{loanId,jdbcType=VARCHAR}
+
+    </select>
+
+
+    <select id="selectByprocessinsId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from repayment
+        where processinsId = #{processinsId,jdbcType=VARCHAR}
+
+    </select>
+
+    <select id="selectByRepayPlanId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from repayment
+        where replanDetaiId = #{replanDetaiId}
+        AND status = '8'
+
+    </select>
+    <select id="selectByRepayPlanIdNoState" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from repayment
+        where replanDetaiId = #{replanDetaiId} order by id desc limit 1
+
+
+    </select>
+
+    <select id="selectMaxCurrentRepaymentByLoanId" resultMap="BaseResultMap"
+            parameterType="java.lang.String">
+        <![CDATA[
+
+
+
+
+
+          select * from repayment left JOIN
+        loan_info ON repayment.loanId = loan_info.uuid
+        where loan_info.uuid = #{loanId} AND repayment.createDate=(
+        select MAX(repayment.createDate) from repayment left JOIN
+        loan_info ON repayment.loanId = loan_info.uuid
+        where loan_info.uuid = #{loanId}
+        )
+
+
+
+
+
+        ]]>
+    </select>
+
+
+    <select id="selectRepaymentCommissionDetail" resultMap="CommissionVo"
+            parameterType="java.util.Map">
+
+        select customer_name as customerName,loan_money as loanMoney,captialSum,interestSum,sum(interestSum) as suminterestSum,
+        t1.repayTime as repayTime,repayPeriod,open_id as openId,order_id as orderId,loanId,nickname,user.id_card as
+        idCard,user.uuid as userId,customer_id as customerId, user.commissionRate as commissionRate,
+        customer_register_info.openIdrate as openIdrate,
+        loan_info.is_ended as isEnded,loan_info.chargedoff_at as chargedoffAt,loan_info.contract_num AS contract_num,
+        customer_register_info.is_important as isImportant,realname as realName,apply_money as applyMoney,applyed_at as applyedAt,
+        orderid as loanOrderId,loan_status as loanStatus,loan_info.state,t1.uuid AS repId
+        from
+        (SELECT
+        repayment.loanId AS loanId,
+        repayment.replanDetaiId AS repayDetailPlanId,
+        sum(
+        repaymenttransaction.actualRepaymentCaptialSum
+        ) AS captialSum,
+        sum(
+        repaymenttransaction.actualRepaymentInterestSum
+        ) AS interestSum,
+        repaymenttransaction.createDay as repayTime,
+        repayment.uuid
+        FROM
+        repayment
+        LEFT JOIN repaymenttransaction ON repayment.uuid = repaymenttransaction.repaymentId
+        WHERE
+        repayment.status = 8
+        GROUP BY
+        repayment.id) as t1 left join repayplandetail ON
+        repayplandetail.id = t1.repayDetailPlanId
+        left JOIN loan_info ON loan_info.uuid = t1.loanId
+        left join customer_register_info ON customer_register_info.uuid = loan_info.customer_id
+        left join user ON user.uuid = loan_info.responsible_cm_id
+        WHERE loan_info.is_chargedoff = true
+        <if test="customerName != null and customerName != '' ">
+            AND customer_name LIKE CONCAT('%',#{customerName,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="nickname != null and nickname != '' ">
+            AND user.nickname LIKE CONCAT('%',#{nickname,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="openId != null and openId != '' ">
+            AND open_id = #{openId,jdbcType=VARCHAR}
+        </if>
+        <if test="orderId != null and orderId != '' ">
+            AND order_id = #{orderId,jdbcType=VARCHAR}
+        </if>
+        <if test="userName != null and userName != '' ">
+            AND nickname = #{nickname,jdbcType=VARCHAR}
+        </if>
+        <if test="startDate != null and startDate != '' ">
+            <![CDATA[
+         AND date_format(loan_info.applyed_at,'%Y-%m-%d') >= #{startDate,jdbcType=TIMESTAMP}
+            ]]>
+        </if>
+        <if test="endDate != null and endDate != '' ">
+            <![CDATA[
+         AND date_format(loan_info.applyed_at,'%Y-%m-%d') <= #{endDate,jdbcType=TIMESTAMP}
+             ]]>
+        </if>
+        <if test="idCard != null and idCard != '' ">
+            AND user.id_card = #{idCard,jdbcType=VARCHAR}
+        </if>
+        <if test="isEnded != null and isEnded != '' ">
+            AND loan_info.is_ended = #{isEnded,jdbcType=INTEGER}
+        </if>
+        <if test="customer_source != null and customer_source != '' ">
+        	<if test="customer_source == 0">
+        		AND (open_id = '' or open_id is null) 
+        	</if>
+        	<if test="customer_source == 1">
+        		AND open_id is not null AND open_id  <![CDATA[ <> ]]> ''
+        	</if>
+        </if>
+        <if test="orderNo != null and orderNo != '' ">
+        	AND orderid LIKE CONCAT('%',#{orderNo,jdbcType=VARCHAR},'%') 
+        </if>
+        <choose>
+            <when test="data_access_level != null and data_access_level == 0">
+                and 1=0
+            </when>
+            <when test="data_access_level != null and data_access_level == 1">
+                AND loan_info.responsible_cm_id = #{userId, jdbcType=VARCHAR}
+            </when>
+            <when test="data_access_level != null and data_access_level == 2">
+                AND loan_info.dept_id = #{myDeptId,jdbcType=INTEGER}
+            </when>
+            <when test="data_access_level != null and data_access_level == 3">
+                AND loan_info.company_id = #{companyId,jdbcType=INTEGER}
+            </when>
+        </choose>
+        group by loanId
+        order by loan_info.orderid desc
+        <if test="page != null and pageSize != null ">
+            limit #{page,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+        </if>
+
+
+    </select>
+    <select id="selectRepaymentCommissionTotal" resultMap="CommissionVo"
+            parameterType="java.util.Map">
+
+        select loan_money as loanMoney,captialSum,interestSum,sum(interestSum) as suminterestSum,
+        t1.repayTime as repayTime,repayPeriod,open_id as openId,order_id as orderId,loanId,nickname,user.id_card as
+        idCard,user.uuid as userId,customer_id as customerId, user.commissionRate as commissionRate,
+        customer_register_info.openIdrate as openIdrate,
+        loan_info.is_ended as isEnded,loan_info.chargedoff_at as chargedoffAt,
+        customer_register_info.is_important as isImportant,realname as realName,apply_money as applyMoney,applyed_at as applyedAt,
+        orderid as loanOrderId,loan_status as loanStatus,loan_info.state
+        from
+        (SELECT
+        repayment.loanId AS loanId,
+        repayment.replanDetaiId AS repayDetailPlanId,
+        sum(
+        repaymenttransaction.actualRepaymentCaptialSum
+        ) AS captialSum,
+        sum(
+        repaymenttransaction.actualRepaymentInterestSum
+        ) AS interestSum,
+        repaymenttransaction.createDay as repayTime
+        FROM
+        repayment
+        LEFT JOIN repaymenttransaction ON repayment.uuid = repaymenttransaction.repaymentId
+        WHERE
+        repayment.status = 8
+        GROUP BY
+        repayment.id) as t1 left join repayplandetail ON
+        repayplandetail.id = t1.repayDetailPlanId
+        left JOIN loan_info ON loan_info.uuid = t1.loanId
+        left join customer_register_info ON customer_register_info.uuid = loan_info.customer_id
+        left join user ON user.uuid = loan_info.responsible_cm_id
+        WHERE loan_info.is_chargedoff = true
+        <choose>
+            <when test="data_access_level != null and data_access_level == 0">
+                and 1=0
+            </when>
+            <when test="data_access_level != null and data_access_level == 1">
+                AND loan_info.responsible_cm_id = #{userId, jdbcType=VARCHAR}
+            </when>
+            <when test="data_access_level != null and data_access_level == 2">
+                AND loan_info.dept_id = #{myDeptId,jdbcType=INTEGER}
+            </when>
+            <when test="data_access_level != null and data_access_level == 3">
+                AND loan_info.company_id = #{companyId,jdbcType=INTEGER}
+            </when>
+        </choose>
+        group by loanId
+        order by loan_info.chargedoff_at
+
+    </select>
+        <select id="selectRepaymentCommissionTotalSum" resultType="java.math.BigDecimal"
+            parameterType="java.util.Map">
+
+         SELECT SUM(loan_money) FROM loan_info  WHERE is_chargedoff = TRUE
+        
+        <choose>
+            <when test="data_access_level != null and data_access_level == 0">
+                and 1=0
+            </when>
+            <when test="data_access_level != null and data_access_level == 1">
+                AND loan_info.responsible_cm_id = #{userId, jdbcType=VARCHAR}
+            </when>
+            <when test="data_access_level != null and data_access_level == 2">
+                AND loan_info.dept_id = #{myDeptId,jdbcType=INTEGER}
+            </when>
+            <when test="data_access_level != null and data_access_level == 3">
+                AND loan_info.company_id = #{companyId,jdbcType=INTEGER}
+            </when>
+        </choose>
+    </select>
+    
+    
+    
+     
+    
+    
+    
+    <select id="selectRepaymentSumCount" resultType="java.util.Map"
+            parameterType="java.util.Map">
+
+        SELECT
+        sum(repayplandetail.repayCapital) AS repayCapitalsum,
+        sum(repayplandetail.repayInterest) AS repayInterestSum,
+        sum(repayplandetail.manageFee) as manageFeeSum,
+        sum(repayplandetail.gpsCost) as gpsCostSum,
+        sum(repayplandetail.overdueFee) as overdueFeeSum,
+        sum(repayplandetail.checkCost) as checkCostSum,
+        sum(repayplandetail.parkCost) as parkCostSum
+        FROM
+        repayplandetail
+        LEFT JOIN repayplan ON repayplandetail.repayPlanId = repayplan.id
+        LEFT JOIN loan_info ON repayplan.loanId = loan_info.uuid
+        WHERE
+        loan_info.is_chargedoff = TRUE
+        AND repayplandetail.isRepay = FALSE
+        <if test="startDate != null and startDate != '' ">
+            <![CDATA[
+         AND repayplandetail.repayDate >= #{startDate,jdbcType=TIMESTAMP}
+            ]]>
+        </if>
+        <if test="endDate != null and endDate != '' ">
+            <![CDATA[
+         AND repayplandetail.repayDate <= #{endDate,jdbcType=TIMESTAMP}
+             ]]>
+        </if>
+
+    </select>
+
+	<select id="selectReapySumByLoanId" resultType="DECIMAL">
+		select sum(rmt.actualRepaymentSum) from  repayment  rm  left join repaymenttransaction rmt on rmt.repaymentId=rm.uuid where rm.loanId=#{param1}
+	</select>
+
+	<select id="selectLastRepaymentByLoanId" resultMap="BaseResultMap">
+		select 
+	 <include refid="Base_Column_List"/>
+		from repayment where loanId=#{param1} order by id desc limit 1
+	</select>
+	
+	<select id="selectRepaymentEnd" resultType="java.lang.String">
+	 SELECT rpm.loanId FROM repayplandetail rpd INNER JOIN 
+		( SELECT loanId,replanDetaiId FROM repayment WHERE  STATUS = 26 
+			OR repaymentType in
+			 <foreach item="item" collection="param2" open="(" separator="," close=")"
+                     index="index">
+                #{item}
+            </foreach>
+	) rpm ON rpd.id = rpm.replanDetaiId 
+	WHERE
+	DATE_FORMAT(rpd.repayDate, '%Y%m')&lt;=#{param1}
+	
+	</select>
+	<select id="selectRepayMoneyByRepaymentId" resultType="DECIMAL">
+	select rpd.repayTotal-rpd.surplusRepayTotal from repayment rpm left join repayplandetail rpd on rpm.replanDetaiId=rpd.id where rpm.uuid=#{param1}
+	</select>
+	<select id="selectRepayMoney" resultType="DECIMAL">
+	select sum(repayCapital) from repayplandetail where repayPlanId=#{param1} 
+	<if test="param3==1">
+	 	and  repayPeriod&lt;=#{param2}
+	</if>
+	<if test="param3==0">
+		and  repayPeriod&lt;#{param2}
+	</if>
+	</select>
+	<select id="selectSumRepayMoney" resultType="DECIMAL">
+	select sum(repayCapital) from loan_info li left join repayplan rp on li.uuid=rp.loanId left join repayplandetail rpd on rp.id=rpd.repayPlanId where li.uuid=#{param1} and rpd.isRepay=1
+	</select>
+
+    <select id="selectNeedRepaySumById" resultType="java.util.Map" parameterType="java.lang.String">
+        select rpd.repayTotal,rm.loanId from  repayment  rm
+         INNER join repayplandetail rpd on rpd.id=rm.replanDetaiId
+         WHERE rm.uuid =#{param}
+         limit 0,1
+    </select>
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.utonw.dealer.mapper.MerchantRegionMapper">
+
+	<resultMap id="BaseResultMap" type="com.utonw.dealer.api.entity.MerchantRegion">
+		<id column="id" property="id" />
+		<result column="apply_id" property="applyId" />
+		<result column="province" property="province 	" />
+		<result column="city" property="city" />
+		<result column="district" property="district" />
+		<result column="detailed_address" property="detailedAddress" />
+		<result column="contract_time" property="contractTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="type" property="type" />
+		<result column="dealer_address" property="dealerAddress" />
+	</resultMap>
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id, apply_id,province,city,district,detailed_address,contract_time,update_time,type,dealer_address
+    </sql>
+</mapper>

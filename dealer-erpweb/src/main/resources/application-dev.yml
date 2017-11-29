@@ -1,0 +1,56 @@
+server:
+      port: 9088
+      tomcat:
+        max-threads: 800                # tomcat最大线程数，默认为200
+        uri-encoding: UTF-8             # tomcat的URI编码
+        basedir: /springboot-tomcat-tmp # 存放Tomcat的日志、Dump等文件的临时文件夹，默认为系统的tmp文件夹（如：C:\Users\Shanhy\AppData\Local\Temp）
+        accesslog:
+          enabled: true                 # 打开Tomcat的Access日志，并可以设置日志格式的方法：
+                                        #server.tomcat.access-log-pattern=
+                                        # accesslog目录，默认在basedir/logs
+logging:
+  config: classpath:logback.xml                                   #server.tomcat.accesslog.directory=
+spring:
+  http:
+    encoding:
+      force: true
+      charset: UTF-8
+      enabled: true
+  dubbo:
+    application:
+      name : sysweb
+    registry:
+      address: zookeeper://192.168.1.171:2181
+    protocol:
+      name: dubbo
+      port: 20877
+      serialization: hessian2
+    scan: com.utonw
+    consumer:
+      timeout: 50000
+    provider:
+      timeout: 50000
+  jedis:
+    database: 0
+    host: 192.168.1.171
+    port: 6379
+    password: 123456
+    pool:
+      config:
+        maxactive: 8
+        maxwait: -1
+        maxtotal: 8
+        minidle: 0
+    timeout: 0
+  mvc:
+    view:
+      suffix: .jsp
+      prefix: /WEB-INF/views/
+  resources:
+    static-locations: /static/
+config:
+  tokensaver: redis
+  ##redis,database 两种存储方式。
+  web_token_expire_hours: 1
+  ##跨域服务器域名定义
+  corsdomain: http://127.0.0.1:9999

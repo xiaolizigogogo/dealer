@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.utonw.dealer.mapper.CarsokZbTaskMapper">
+
+	<resultMap id="BaseResultMap" type="com.utonw.dealer.api.entity.CarsokZbTask">
+		<id column="id" property="id" />
+		<result column="carName" property="carname" />
+		<result column="carNum" property="carnum" />
+		<result column="lastCarNum" property="lastcarnum" />
+		<result column="taskStatus" property="taskstatus" />
+		<result column="taskNum" property="tasknum" />
+		<result column="taskAccount" property="taskaccount" />
+		<result column="taskTime" property="tasktime" />
+		<result column="enable" property="enable" />
+		<result column="vin" property="vin" />
+		<result column="maintain_info" property="maintainInfo" />
+		<result column="product_id" property="productId" />
+	</resultMap>
+	<resultMap id="CarEnclosureMap" type="com.utonw.dealer.api.dto.response.CarEnclosure">
+		<result column="arcPath" property="arcPath" />
+		<result column="dlPath" property="dlPath" />
+		<result column="policyPath" property="policyPath" />
+		<result column="idcardPath" property="idcardPath" />
+	</resultMap>
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id, carName AS carname, carNum AS carnum, lastCarNum AS lastcarnum, taskStatus AS taskstatus, taskNum AS tasknum, taskAccount AS taskaccount, taskTime AS tasktime, enable, vin, maintain_info AS maintainInfo, product_id AS productId
+    </sql>
+
+	<select id="selectCarEnclosure" resultMap="CarEnclosureMap">
+		SELECT
+			czts.arcPath,
+			czts.dlPath,
+			czts.policyPath,
+			czts.idcardPath
+		FROM
+			carsok_zb_task czt
+		LEFT JOIN carsok_zb_task_sxy czts ON czt.id = czts.tid
+		WHERE czt.product_id =#{productId} order by czt.taskTime desc limit 1
+	</select>
+</mapper>

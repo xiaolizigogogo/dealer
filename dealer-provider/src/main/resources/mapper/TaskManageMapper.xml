@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.utonw.dealer.mapper.TaskManageMapper">
+
+	<resultMap id="BaseResultMap" type="com.utonw.dealer.api.entity.TaskManage">
+		<id column="id" property="id" />
+		<result column="taskName" property="taskname" />
+		<result column="merchantId" property="merchantid" />
+		<result column="roleId" property="roleid" />
+		<result column="taskAssigee" property="taskassigee" />
+		<result column="status" property="status" />
+		<result column="createTime" property="createtime" />
+		<result column="finishTime" property="finishtime" />
+		<result column="indentId" property="indentid" />
+	</resultMap>
+	<resultMap id="BaseResultOrderList" type="com.utonw.dealer.api.entity.OrderList">
+		<id column="id" property="productId" />
+		<id column="indentNumber" property="indentNumber" />
+		<result column="indentState" property="indentState" />
+		<result column="applyMoney" property="applyMoney" />
+		<result column="product_name" property="product_name" />
+		<result column="on_shelf_time" property="on_shelf_time" />
+		<result column="price" property="price" />
+		<result column="miniprice" property="miniprice" />
+		<result column="miles" property="miles" />
+		<result column="pic_path" property="pic_path" />
+		<result column="indentId" property="indentId" />
+		<result column="taskAssigee" property="taskAssigee" />
+		<result column="taskId" property="taskId" />
+		<result column="evaluationTime" property="evaluationTime" />
+		<result column="updateTime" property="updateTime" />
+		<result column="regionId" property="regionid" />
+		<result column="vin" property="vin" />
+	</resultMap>
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id, taskName AS taskname, merchantId AS merchantid, roleId AS roleid, taskAssigee AS taskassigee, status, createTime AS createtime, finishTime AS finishtime ,indentId AS indentid,regionId AS regionid
+    </sql>
+	<select id="getOrderLists"  resultMap="BaseResultOrderList">
+	
+	SELECT
+   DISTINCT
+		mi.indentNumber,
+	    mi.indentState,
+	    mi.applyMoney,
+	    cp.product_name,
+		cp.on_shelf_time,
+		cp.price,
+		cp.miniprice,
+		cpo.miles,
+		cp.id,
+        cp1.pic_path,
+		mi.id AS indentId,
+		es.evaluationTime,
+		es.updateTime,
+		cp.vin,mi.plateNumber
+	FROM
+		merchant_indent mi
+	LEFT JOIN carsok_product cp ON mi.productId = cp.id
+	LEFT JOIN carsok_pruduct_oldcar cpo ON cp.id = cpo.pruduct_id
+    LEFT JOIN carsok_picture cp1 ON mi.productId = cp1.product_id
+	LEFT JOIN evaluation_sheet es ON mi.id = es.indentId
+		WHERE
+	    mi.id IN <foreach collection="list" item="list" separator="," open="(" close=")">#{list}</foreach>
+		AND mi.acount_id = #{acountId}
+        <if test="productName != null">
+			AND cp.product_name LIKE CONCAT('%', #{productName}, '%')
+		</if>
+    group by product_id
+   ORDER BY mi.createdTime desc
+	
+		<!-- SELECT
+   DISTINCT
+		mi.indentNumber,
+	    mi.indentState,
+	    mi.applyMoney,
+	    cp.product_name,
+		  cp.on_shelf_time,
+		  cp.price,
+		  cp.miniprice,
+		  cpo.miles,
+		  cp.id,
+        cp1.pic_path,
+		  mi.id AS indentId,
+		tm.taskAssigee,
+		tm.id AS taskId,
+		es.evaluationTime,
+		es.updateTime
+	FROM
+		task_manage tm
+	LEFT JOIN merchant_indent mi ON tm.indentId = mi.id
+	LEFT JOIN carsok_product cp ON mi.productId = cp.id
+	LEFT JOIN carsok_pruduct_oldcar cpo ON cp.id = cpo.pruduct_id
+    LEFT JOIN carsok_picture cp1 ON mi.productId = cp1.product_id
+	LEFT JOIN evaluation_sheet es ON mi.id = es.indentId
+		WHERE
+		tm.merchantId = #{acountId}
+	AND tm.roleId = #{roleId} AND mi.indentState=#{status} AND tm.status= #{taskStatus} AND (tm.taskAssigee=#{loginId} OR tm.taskAssigee is NULL )
+        <if test="productName != null">
+			AND cp.product_name LIKE CONCAT('%', #{productName}, '%')
+		</if>
+    group by product_id
+   ORDER BY tm.createTime desc -->
+	</select>
+</mapper>

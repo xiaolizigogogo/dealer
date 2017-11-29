@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.utonw.utonerp.mapper.DistributionUserMapper">
+	<select id="selectUserName" resultType="com.utonw.dealer.api.entity.erp.DistributionUser">
+	SELECT
+	USER.realname userName,user_locate.province province,user_locate.city city,user_locate.district district
+    FROM
+	USER ,user_locate, 
+	role_user ruser
+    WHERE
+	USER .uuid = ruser.rb_user_id
+    AND ruser.rb_role_id = 95
+    AND USER .uuid=user_locate.user_id
+    <if test="province != null" >
+        AND user_locate.province=#{province,jdbcType=VARCHAR}
+    </if>
+    <if test="city != null" >
+        AND user_locate.city=#{city,jdbcType=VARCHAR}
+    </if>
+    <if test="district != null" >
+        AND user_locate.district=#{district,jdbcType=VARCHAR}
+    </if>
+	</select>
+</mapper>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.utonw.dealer.mapper.EvaluationSheetMapper">
+
+	<resultMap id="BaseResultMap" type="com.utonw.dealer.api.entity.EvaluationSheet">
+		<id column="id" property="id" />
+		<result column="indentId" property="indentid" />
+		<result column="productId" property="productid" />
+		<result column="acountId" property="acountid" />
+		<result column="systemAssess" property="systemassess" />
+		<result column="buyprice" property="buyprice" />
+		<result column="appraisersPrice" property="appraisersprice" />
+		<result column="hostlingCost" property="hostlingcost" />
+		<result column="loanLimit" property="loanlimit" />
+		<result column="condition" property="condition" />
+		<result column="remark" property="remark" />
+		<result column="evaluationTime" property="evaluationtime" />
+		<result column="travelLicense" property="travellicense" />
+		<result column="commercial" property="commercial" />
+		<result column="leaveProvince" property="leaveprovince" />
+		<result column="updateTime" property="updatetime" />
+		<result column="updateBy" property="updateby" />
+		<result column="guidePrice" property="guideprice" />
+		<result column="evaluationUrl" property="evaluationurl" />
+		<result column="maintainUrl" property="maintainurl" />
+		<result column="sn" property="sn" />
+	</resultMap>
+	<resultMap id="BaseResultOrderStatus" type="com.utonw.dealer.api.entity.OrderStatusUpdate">
+		<result column="indentState" property="indentState" />
+		<result column="updatetime" property="updatetime" />
+	</resultMap>
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id, indentId AS indentid, productId, acountId AS acountid, systemAssess AS systemassess, buyprice, appraisersPrice AS appraisersprice, hostlingCost AS hostlingcost, loanLimit AS loanlimit, condition, remark, evaluationTime AS evaluationtime, travelLicense AS travellicense, commercial, leaveProvince AS leaveprovince, updateTime AS updatetime, updateBy AS updateby,guidePrice AS guideprice,evaluationUrl AS evaluationurl,maintainUrl AS maintainurl,sn  AS sn
+    </sql>
+
+	<resultMap id="AppraisalInfo" type="com.utonw.dealer.api.dto.response.AppraisalInfoResponse">
+		<result column="saled_type" property="saledType" jdbcType="VARCHAR" />
+		<result column="appraisersPrice" property="appraisersPrice" jdbcType="DECIMAL" />
+		<result column="real_name" property="realName" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="selectAppraisalInfo" parameterType="java.lang.String" resultMap="AppraisalInfo">
+		SELECT
+			CASE
+				WHEN cp.saled_type =1 THEN '全款'
+				WHEN cp.saled_type =2 THEN '贷款'
+				ELSE ''
+			END AS saled_type,
+			es.appraisersPrice,ca.real_name,es.remark
+		FROM evaluation_sheet es
+		LEFT JOIN carsok_product cp ON cp.id = es.pruductId
+		LEFT JOIN carsok_acount ca ON ca.account = es.acountId
+		WHERE es.indentId = #{id}
+	</select>
+	
+	<select id="selectUpdatetime" parameterType="Map" resultMap="BaseResultOrderStatus">
+		select es.updatetime,mi.indentState
+		from evaluation_sheet es
+        LEFT JOIN merchant_indent mi ON es.indentId = mi.id
+		where es.indentId=#{orderId} AND es.pruductId =#{productId}
+	</select>
+	
+	<select id="selectEvaluateInfoById" parameterType="java.lang.String" resultType="java.util.Map">
+	SELECT * from evaluation_sheet es 
+	left join carsok_product cp ON cp.id = es.pruductId 
+	left join carsok_pruduct_oldcar cpo on cpo.pruduct_id=cp.id 
+	left join merchant_indent mi on mi.id=es.indentId
+	WHERE es.indentId = #{id}
+	</select>
+</mapper>

@@ -1,0 +1,25 @@
+.list_box .table-bordered{ margin-bottom:15px;}
+.list_box .table-bordered > thead > tr > th{
+
+	border-bottom:2px #d43f3a solid; background:#fff; text-align:center;
+}
+.list_box .table-bordered > tbody > tr > td{ text-align:center;}
+.list_box .table-bordered > tbody > tr > td:first-child{ text-align:left;}
+.pagination{ margin:0;}
+.pagination > li > a, .pagination > li > span, .pagination > li > a:hover, .pagination > li > span:hover, .pagination > li > a:focus, .pagination > li > span:focus, .pagination > li > a:active, .pagination > li > span:active {
+	color: #e74c3c;
+}
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+	background-color: #e74c3c;
+	border-color: #e74c3c;
+	color: #fff;
+}
+.list_box .table-bordered  .fa{ padding-right:10px;}
+.list_box .table-bordered .danger{ color:#a94442;}
+.pages-area { clear: both; padding: 5px 0;  overflow: hidden; margin: 15px;}
+
+.pages-area .pages-total { float: left; }
+
+.pages-area .pagination { float: right; margin: 0; }
+
+.pages-area .form-inline { float: right; }

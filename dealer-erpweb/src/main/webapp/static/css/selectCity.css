@@ -1,0 +1,30 @@
+#adress_body{
+	position: absolute;
+	display: flex;
+	left: 0;
+	border: 1px solid #ccc;
+	overflow: hidden;
+	background-color: #fff;
+	z-index: 100;
+}
+#adress_body>ul>li,#adress_body>ul{
+	padding: 0;margin: 0;
+	list-style: none;
+	cursor: pointer;
+}
+#adress_body>ul{
+	width: 180px;
+	height: 300px;
+	overflow: auto;
+	float: left;
+}
+#adress_body>ul>li{
+	padding: 5px 10px;
+}
+#adress_body>ul:nth-child(2){
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+}
+#adress_body>ul>.pitch_on{
+	background-color: #f2f2f2;
+}

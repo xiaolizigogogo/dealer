@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.utonw.dealer.mapper.MerchantReviewMapper">
+
+	<resultMap id="BaseResultMap" type="com.utonw.dealer.api.entity.MerchantReview">
+		<result column="merchant_name" property="merchantName" />
+		<result column="approve_money" property="approveMoney" />
+		<result column="id" property="id" />
+		<result column="apply_money" property="applyMoney" />
+		<result column="apply_time" property="applyTime" />
+		<result column="loan_status" property="loanStatus" />
+		<result column="indent_id" property="indentId" />
+		<result column="review_conclusion" property="reviewConclusion" />
+		<result column="review_by_id" property="reviewById" />
+	</resultMap>
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        merchant_name AS merchantName, approve_money AS approveMoney, id, apply_money AS applyMoney, apply_time AS applyTime, loan_status AS loanStatus, indent_id AS indentId, review_conclusion AS reviewConclusion, review_by_id AS reviewById
+    </sql>
+</mapper>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.utonw.utonerp.mapper.RateConfigMapper">
+
+	<resultMap id="BaseResultMap" type="com.utonw.dealer.api.entity.RateConfig">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="day_range" property="dayRange" />
+		<result column="gmt_create" property="gmtCreate" />
+		<result column="gmt_update" property="gmtUpdate" />
+		<result column="enable" property="enable" />
+		<result column="company_id" property="companyId" />
+	</resultMap>
+
+	<select id="selectRateConfigs" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		SELECT *
+		FROM rate_config
+		WHERE enable=1 
+		<if test="param1!=null and param1!=''">
+		and company_id=#{param1}
+		</if>
+		order by day_range desc
+	</select>
+	<update id="updateFinancingRate" parameterType="com.utonw.dealer.api.entity.RateConfig" >
+		update rate_config
+		<set >
+			<if test="dayRange != null" >
+				day_range = #{dayRange},
+			</if>
+			<if test="rate != null" >
+				rate = #{rate},
+			</if>
+			<if test="gmtUpdate != null" >
+				gmt_update = #{gmtUpdate},
+			</if>
+			<if test="enable != null" >
+				enable = #{enable}
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<insert id="insertFinancingRate" parameterType="com.utonw.dealer.api.entity.RateConfig" >
+		insert into rate_config (id, day_range, rate,
+		gmt_create, enable)
+		values (#{id}, #{dayRange}, #{rate},
+		#{gmtCreate}, #{enable})
+	</insert>
+</mapper>

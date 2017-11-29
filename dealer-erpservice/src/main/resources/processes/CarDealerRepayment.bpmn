@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="CarDealerRepayment" name="CarDealerRepayment" isExecutable="true">
+    <startEvent id="startevent1" name="Start"></startEvent>
+    <userTask id="withholding_commission" name="待总部委托代扣" activiti:candidateGroups="88"></userTask>
+    <sequenceFlow id="flow32" sourceRef="startevent1" targetRef="withholding_commission"></sequenceFlow>
+    <userTask id="dismantling" name="待线下人员拆除设备" activiti:assignee="${user}"></userTask>
+    <sequenceFlow id="flow33" sourceRef="distrution_user_dismantling" targetRef="dismantling"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow34" sourceRef="dismantling" targetRef="endevent1"></sequenceFlow>
+    <userTask id="distrution_user_dismantling" name="待分配线下人员拆除设备" activiti:candidateGroups="89"></userTask>
+    <sequenceFlow id="flow35" sourceRef="withholding_commission" targetRef="distrution_user_dismantling"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_CarDealerRepayment">
+    <bpmndi:BPMNPlane bpmnElement="CarDealerRepayment" id="BPMNPlane_CarDealerRepayment">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="140.0" y="330.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="withholding_commission" id="BPMNShape_withholding_commission">
+        <omgdc:Bounds height="55.0" width="105.0" x="294.0" y="320.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="dismantling" id="BPMNShape_dismantling">
+        <omgdc:Bounds height="55.0" width="105.0" x="760.0" y="320.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="1000.0" y="330.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="distrution_user_dismantling" id="BPMNShape_distrution_user_dismantling">
+        <omgdc:Bounds height="55.0" width="105.0" x="510.0" y="320.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
+        <omgdi:waypoint x="175.0" y="347.0"></omgdi:waypoint>
+        <omgdi:waypoint x="294.0" y="347.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
+        <omgdi:waypoint x="615.0" y="347.0"></omgdi:waypoint>
+        <omgdi:waypoint x="760.0" y="347.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
+        <omgdi:waypoint x="865.0" y="347.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1000.0" y="347.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
+        <omgdi:waypoint x="399.0" y="347.0"></omgdi:waypoint>
+        <omgdi:waypoint x="510.0" y="347.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

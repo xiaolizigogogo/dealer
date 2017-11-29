@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace=" com.utonw.dealer.mapper.MerchantVideoMapper">
+
+	<resultMap id="BaseResultMap" type="com.utonw.dealer.api.entity.MerchantVideo">
+		<id column="id" property="id" />
+		<result column="applyId" property="applyid" />
+		<result column="videoTitle" property="videotitle" />
+		<result column="createdDate" property="createddate" />
+		<result column="videoUrl" property="videourl" />
+		<result column="updateTime" property="updatetime" />
+	</resultMap>
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id, applyId AS applyid, videoTitle AS videotitle, createdDate AS createddate, videoUrl AS videourl, updateTime AS updatetime
+    </sql>
+</mapper>

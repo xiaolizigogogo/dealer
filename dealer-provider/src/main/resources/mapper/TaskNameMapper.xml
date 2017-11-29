@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.utonw.utonerp.mapper.TaskNameMapper" >
+  <resultMap id="BaseResultMap" type="com.utonw.dealer.api.entity.TaskName" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="task_name" property="taskName" jdbcType="VARCHAR" />
+    <result column="task_code" property="taskCode" jdbcType="VARCHAR" />
+    <result column="gmt_create" property="gmtCreate" jdbcType="VARCHAR" />
+    <result column="gmt_modify" property="gmtModify" jdbcType="VARCHAR" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="enable" property="enable" jdbcType="BIT" />
+    <result column="task_type" property="taskType" jdbcType="VARCHAR" />
+    <result column="task_order" property="taskOrder" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, task_name, task_code, gmt_create, gmt_modify, memo, enable, task_type, task_order,task_div
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from task_name
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from task_name
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.utonw.dealer.api.entity.TaskName" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into task_name (task_name, task_code, gmt_create, 
+      gmt_modify, memo, enable, 
+      task_type, task_order,task_div)
+    values (#{taskName,jdbcType=VARCHAR}, #{taskCode,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=VARCHAR}, 
+      #{gmtModify,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{enable,jdbcType=BIT}, 
+      #{taskType,jdbcType=VARCHAR}, #{taskOrder,jdbcType=INTEGER},#{taskDiv,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.utonw.dealer.api.entity.TaskName" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into task_name
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="taskName != null" >
+        task_name,
+      </if>
+      <if test="taskCode != null" >
+        task_code,
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create,
+      </if>
+      <if test="gmtModify != null" >
+        gmt_modify,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+      <if test="enable != null" >
+        enable,
+      </if>
+      <if test="taskType != null" >
+        task_type,
+      </if>
+      <if test="taskOrder != null" >
+        task_order,
+      </if>
+         <if test="taskDiv != null" >
+        task_div,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="taskName != null" >
+        #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskCode != null" >
+        #{taskCode,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null" >
+        #{gmtCreate,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtModify != null" >
+        #{gmtModify,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null" >
+        #{enable,jdbcType=BIT},
+      </if>
+      <if test="taskType != null" >
+        #{taskType,jdbcType=VARCHAR},
+      </if>
+      <if test="taskOrder != null" >
+        #{taskOrder,jdbcType=INTEGER},
+      </if>
+           <if test="taskDiv != null" >
+         #{taskDiv,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.utonw.dealer.api.entity.TaskName" >
+    update task_name
+    <set >
+      <if test="taskName != null" >
+        task_name = #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskCode != null" >
+        task_code = #{taskCode,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create = #{gmtCreate,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtModify != null" >
+        gmt_modify = #{gmtModify,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null" >
+        enable = #{enable,jdbcType=BIT},
+      </if>
+      <if test="taskType != null" >
+        task_type = #{taskType,jdbcType=VARCHAR},
+      </if>
+      <if test="taskOrder != null" >
+        task_order = #{taskOrder,jdbcType=INTEGER},
+      </if>
+            <if test="taskDiv != null" >
+        task_div = #{taskDiv,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.utonw.dealer.api.entity.TaskName" >
+    update task_name
+    set task_name = #{taskName,jdbcType=VARCHAR},
+      task_code = #{taskCode,jdbcType=VARCHAR},
+      gmt_create = #{gmtCreate,jdbcType=VARCHAR},
+      gmt_modify = #{gmtModify,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      enable = #{enable,jdbcType=BIT},
+      task_type = #{taskType,jdbcType=VARCHAR},
+      task_order = #{taskOrder,jdbcType=INTEGER},
+      task_div = #{taskDiv,jdbcType=VARCHAR},
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectAllEnable" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" />
+    from task_name
+    where enable=1;
+  </select>
+</mapper>

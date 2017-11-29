@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.utonw.dealer.mapper.api.MerchantPictureMapper">
+
+	<resultMap id="BaseResultMap" type="com.utonw.dealer.api.entity.MerchantPicture">
+		<id column="id" property="id" />
+		<result column="acountId" property="acountid" />
+		<result column="fileTitle" property="filetitle" />
+		<result column="createDate" property="createdate" />
+		<result column="fileUrl" property="fileurl" />
+		<result column="reviewStatus" property="reviewstatus" />
+	</resultMap>
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id, acountId AS acountid, fileTitle AS filetitle, createDate AS createdate, fileUrl AS fileurl, reviewStatus AS reviewstatus
+    </sql>
+</mapper>

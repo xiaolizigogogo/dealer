@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.utonw.dealer.mapper.CarsokCustomerTrnureCarMapper">
+
+	<resultMap id="BaseResultMap" type="com.utonw.dealer.api.entity.CarsokCustomerTrnureCar">
+		<id column="id" property="id" />
+		<result column="tenure_carname" property="tenureCarname" />
+		<result column="tenure_vin" property="tenureVin" />
+		<result column="tenure_carnum" property="tenureCarnum" />
+		<result column="tenure_cartype" property="tenureCartype" />
+		<result column="tenure_compulsory" property="tenureCompulsory" />
+		<result column="tenure_business" property="tenureBusiness" />
+		<result column="tenure_maintain" property="tenureMaintain" />
+		<result column="tenure_Warranty" property="tenureWarranty" />
+		<result column="tenure_carprice" property="tenureCarprice" />
+		<result column="product_id" property="productId" />
+		<result column="create_time" property="createTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="enable" property="enable" />
+		<result column="sale_people" property="salePeople" />
+		<result column="car_males" property="carMales" />
+		<result column="sale_time" property="saleTime" />
+		<result column="account_id" property="accountId" />
+		<result column="child_id" property="childId" />
+		<result column="brand" property="brand" />
+	</resultMap>
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id, tenure_carname AS tenureCarname, tenure_vin AS tenureVin, tenure_carnum AS tenureCarnum, tenure_cartype AS tenureCartype, tenure_compulsory AS tenureCompulsory, tenure_business AS tenureBusiness, tenure_maintain AS tenureMaintain, tenure_Warranty AS tenureWarranty, tenure_carprice AS tenureCarprice, product_id AS productId, create_time AS createTime, update_time AS updateTime, enable, sale_people AS salePeople, car_males AS carMales, sale_time AS saleTime, account_id AS accountId, child_id AS childId, brand
+    </sql>
+</mapper>

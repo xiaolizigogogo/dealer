@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.utonw.dealer.mapper.MerchantIndentMapper">
+
+	<resultMap id="BaseResultMap" type="com.utonw.dealer.api.entity.MerchantIndent">
+		<id column="id" property="id" />
+		<result column="acount_id" property="acountId" />
+		<result column="productId" property="productid" />
+		<result column="indentNumber" property="indentnumber" />
+		<result column="indentState" property="indentstate" />
+		<result column="createdTime" property="createdtime" />
+		<result column="updateTime" property="updatetime" />
+		<result column="applyMoney" property="applymoney" />
+		<result column="judgeMoney" property="judgemoney" />
+		<result column="deadlineTime" property="deadlinetime" />
+		<result column="interest_rate" property="interestRate" />
+		<result column="isLegalPerson" property="islegalperson" />
+		<result column="video_url" property="videoUrl" />
+		<result column="whetherPass" property="whetherpass" />
+		<result column="rejectRemarks" property="rejectremarks" />
+		<result column="plateNumber" property="platenumber" />
+		<result column="out_account_time" property="outAccountTime" />
+		<result column="obdState" property="obdstate" />
+		<result column="repaymenTime" property="repaymentime" />
+		<result column="superviseType" property="supervisetype" />
+	</resultMap>
+	<resultMap id="IndentInfoErpMap" type="com.utonw.dealer.api.entity.TaskInfoErpEntity">
+		<result column="id" property="id" />
+		<result column="merchantName" property="merchantName" />
+		<result column="indentNumber" property="indentNumber" />
+		<result column="acountId" property="acountId" />
+		<result column="applyMoney" property="applyMoney" />
+		<result column="judgeMoney" property="judgeMoney" />
+		<result column="updateTime" property="updateTime" />
+		<result column="createdTime" property="createdTime" />
+		<result column="indentState" property="indentStatus" />
+	</resultMap>
+
+	<resultMap id="IndentCountMap" type="com.utonw.dealer.api.dto.response.IndentCountResponse">
+		<result column="totalIndent" property="totalIndent" jdbcType="INTEGER"/>
+		<result column="loanCount" property="loanCount" jdbcType="INTEGER"/>
+		<result column="loanMoney" property="loanMoney" jdbcType="DECIMAL"/>
+		<result column="unLoan" property="unLoan" jdbcType="INTEGER"/>
+	</resultMap>
+
+	<resultMap id="SupervisionMap" type="com.utonw.dealer.api.entity.Supervision">
+		<result column="indentNumber" property="indentNumber"/>
+		<result column="realName" property="real_name" />
+		<result column="acountId" property="acount_id" />
+		<result column="mobile" property="mobile"/>
+		<result column="merchantName" property="merchantName"/>
+		<result column="totalAmount" property="totalAmount"/>
+		<result column="totalIndent" property="totalIndent"/>
+		<result column="overdueCount" property="overdueCount"/>
+		<result column="productNo" property="product_no"/>
+		<result column="cBrand" property="c_brand"/>
+		<result column="cType" property="c_type"/>
+		<result column="id" property="id"/>
+		<result column="outAccountTime" property="out_account_time"/>
+		<result column="judgeMoney" property="judgeMoney"/>
+		<result column="deadlineTime" property="deadlineTime"/>
+		<result column="interestRate" property="interest_rate"/>
+		<result column="productId" property="productId"/>
+		<result column="plateNumber" property="plateNumber"/>
+		<result column="repaymenTime" property="repaymenTime"/>
+		<result column="stockNumber" property="stockNumber"/>
+		<result column="afterPlateNumber" property="afterPlateNumber"/>
+	</resultMap>
+	
+	<resultMap id="IndentLoanMap" type="com.utonw.dealer.api.dto.response.LoanInfoResponse">
+		<result column="applyMoney" property="applyMoney" jdbcType="DECIMAL"/>
+		<result column="indentNumber" property="indentNumber" jdbcType="VARCHAR"/>
+		<result column="merchantName" property="merchantName" jdbcType="VARCHAR"/>
+		<result column="createdTime" property="createdTime" jdbcType="TIMESTAMP"/>
+		<result column="indentState" property="indentState" jdbcType="VARCHAR"/>
+		<result column="deadlineTime" property="deadlineTime" jdbcType="INTEGER"/>
+		<result column="isLegalPerson" property="isLegalPerson" jdbcType="INTEGER"/>
+	</resultMap>
+	<resultMap id="BaseResultCompanyDetails" type="com.utonw.dealer.api.entity.CompanyDetails">
+		<result column="merchant_name" property="merchant_name" />
+		<result column="province" property="province" />
+		<result column="city" property="city" />
+		<result column="merchant_address" property="merchant_address" />
+		<result column="merchantName" property="merchantName" />
+		<result column="licenseNumber" property="licenseNumber" />
+		<result column="organizationCode" property="organizationCode" />
+		<result column="limitPercentage" property="limitPercentage" />
+		<result column="monthlyInterest" property="monthlyInterest" />
+		<result column="reviewStatus" property="reviewStatus" />
+		<result column="applyMoney" property="applyMoney" />
+		<result column="real_name" property="real_name" />
+	</resultMap>
+	
+	<!-- 还款计划结果 -->
+	<resultMap id="repaymentPlanResult" type="com.utonw.dealer.api.entity.RepaymentPlan">
+		<result column="merchantName" property="merchantName" />
+		<result column="real_name" property="realName" />
+		<result column="judgeMoney" property="judgeMoney" />
+		<result column="deadlineTime" property="deadlineTime" />
+		<result column="interest_rate" property="interestRate" />
+	</resultMap>
+	<resultMap id="MerchantIndentInfo" type="com.utonw.dealer.api.entity.MerchantIndentInfo">
+		<id column="id" property="id" />
+		<result column="acount_id" property="acountId" />
+		<result column="productId" property="productid" />
+		<result column="indentNumber" property="indentnumber" />
+		<result column="indentState" property="indentstate" />
+		<result column="createdTime" property="createdtime" />
+		<result column="updateTime" property="updatetime" />
+		<result column="applyMoney" property="applymoney" />
+		<result column="judgeMoney" property="judgemoney" />
+		<result column="deadlineTime" property="deadlinetime" />
+		<result column="interest_rate" property="interestRate" />
+		<result column="isLegalPerson" property="islegalperson" />
+		<result column="video_url" property="videoUrl" />
+		<result column="whetherPass" property="whetherpass" />
+		<result column="rejectRemarks" property="rejectremarks" />
+		<result column="plateNumber" property="platenumber" />
+		<result column="out_account_time" property="outAccountTime" />
+		<result column="merchantName" property="merchantName"/>
+		<result column="vin" property="vin"/>
+		<result column="carBrand" property="carBrand"/>
+		<result column="carType" property="carType"/>
+	</resultMap>
+	<!-- 通用查询结果列-->
+	<sql id="Base_Column_List">
+        id, acount_id AS acountId, productId AS productid, indentNumber AS indentnumber, indentState AS indentstate, createdTime AS createdtime, updateTime AS updatetime, applyMoney AS applymoney, judgeMoney AS judgemoney,deadlineTime AS deadlinetime,interest_rate AS interestRate,isLegalPerson AS islegalperson, video_url AS videoUrl,whetherPass AS whetherpass,rejectRemarks AS rejectremarks,
+        plateNumber AS platenumber,out_account_time AS  outAccountTime,obdState AS obdstate,repaymenTime AS  repaymentime,superviseType AS   supervisetype
+    </sql>
+	<select id="queryIndentInfoErp" parameterType="java.util.Map" resultMap="IndentInfoErpMap">
+		SELECT DISTINCT mi.id,mi.acount_id AS acountId, ma.merchantName, mi.applyMoney,mi.judgeMoney,mi.updateTime,mi.indentState,mi.indentNumber,mi.createdTime
+		FROM merchant_indent mi
+		LEFT JOIN merchant_apply ma ON ma.acountId = mi.acount_id
+		LEFT JOIN (
+		SELECT DISTINCT mi2.acount_id,mc.personName FROM merchant_indent mi2 INNER JOIN merchant_contactinfo mc ON mc.acountId = mi2.acount_id
+		WHERE mc.roleName=1
+		) As T ON T.acount_id =MI.acount_id
+		WHERE
+		mi.id IN
+		<foreach item="item"  collection="list" open="("
+				 separator="," close=")">
+			#{item}
+		</foreach>
+		<if test="representative !=null and representative !=''"  >
+			AND T.personName LIKE CONCAT('%',#{representative},'%')
+		</if>
+		<if test="orderNumber !=null and orderNumber !=''">
+			AND mi.indentNumber LIKE CONCAT('%',#{orderNumber},'%')
+		</if>
+		<if test="merchantName !=null and merchantName!=''">
+			AND ma.merchantName LIKE CONCAT('%',#{merchantName},'%')
+		</if>
+		order by  mi.createdTime desc
+	</select>
+
+	<select id="selectIndentCount" parameterType="java.lang.String" resultMap="IndentCountMap">
+		SELECT COUNT(*) AS totalIndent,
+		  	   COUNT(IF(mi.indentState='repayment',TRUE,NULL)) AS loanCount,
+			   IFNULL(SUM(IF(mi.indentState='repayment',mi.applyMoney,0)),0) AS loanMoney,
+			   COUNT(IF(mi.indentState!='repayment',TRUE,NULL)) AS unLoan
+		FROM merchant_indent mi
+		INNER JOIN merchant_apply ma ON mi.acount_id = ma.acountId
+		WHERE mi.id = #{id}
+	</select>
+
+	<select id="selectLoanInfo" parameterType="java.lang.String" resultMap="IndentLoanMap">
+		SELECT mi.applyMoney,mi.indentNumber,ma.merchantName,
+				mi.createdTime,mi.indentState,mi.deadlineTime,mi.islegalPerson
+		FROM merchant_indent mi
+		INNER JOIN merchant_apply ma ON ma.acountId = mi.acount_id
+		WHERE mi.id = #{id}
+	</select>
+	<select id="selectorderForm" parameterType="java.lang.String" resultMap="BaseResultMap">
+	select * FROM merchant_indent WHERE createdTime > #{date}
+	</select>
+	<select id="getCompanyDetails" parameterType="java.lang.String" resultMap="BaseResultCompanyDetails">
+		SELECT
+		ca.merchant_name,
+	  ca.province,
+	  ca.city,
+	  ca.merchant_address,
+	   ma.merchantName,
+	ma.licenseNumber,
+	ma.organizationCode,
+	ma.limitPercentage,
+	ma.monthlyInterest,
+	ma.reviewStatus,
+	mi.applyMoney
+	FROM
+		merchant_indent mi
+	LEFT JOIN merchant_apply ma ON mi.acount_id = ma.acountId
+	LEFT JOIN carsok_acount ca ON ma.acountId = ca.account
+	WHERE
+		mi.id = #{id}
+	</select>
+	
+	<!-- 查询还款计划 -->
+	<select id="getRepaymentPlanInfo" parameterType="java.lang.String" resultMap="repaymentPlanResult">
+	select ma.merchantName,
+           mc.personName as real_name,
+           mi.judgeMoney,
+           mi.deadlineTime,
+           mi.interest_rate
+     from merchant_indent mi inner join merchant_apply ma on mi.acount_id = ma.acountId
+                          inner join merchant_contactinfo mc on mc.acountId=mi.acount_id 
+	 where mi.id = #{merchantIndentId} and roleName=1
+	</select>
+	
+	<select id="selectMerchantIndentById" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select * FROM merchant_indent WHERE id = #{indentId}
+	</select>
+	<select id="selectOrderByCondition" parameterType="com.utonw.dealer.api.dto.request.OrderPageRequest" resultMap="MerchantIndentInfo">
+		select 
+		case  
+		when (mi.indentState='lended'  and  now()&lt;=DATE_ADD(mi.out_account_time,INTERVAL mi.deadlineTime DAY))  then '待还款'
+		when (mi.indentState='lended'  and  now()>DATE_ADD(mi.out_account_time,INTERVAL mi.deadlineTime DAY))   then '逾期'
+		when (mi.indentState='repayment' and  now()>DATE_ADD(mi.out_account_time,INTERVAL mi.deadlineTime DAY))  then  '逾期'
+		when (mi.indentState='repayment' and  now()&lt;=DATE_ADD(mi.out_account_time,INTERVAL mi.deadlineTime DAY))  then  '还款中'
+		when mi.indentState='dismantling'  then  '待拆除设备'
+		when mi.indentState='distrution_user_dismantling' then '待分配线下人员拆除设备'
+		when mi.indentState='repayment_end'  then  '还款结束'
+		ELSE ''
+		END AS indentState,
+		mi.id, mi.acount_id, mi.productId , mi.indentNumber , mi.createdTime , mi.updateTime , mi.applyMoney , mi.judgeMoney ,mi.deadlineTime ,mi.interest_rate ,mi.isLegalPerson , mi.video_url ,mi.whetherPass ,mi.rejectRemarks ,
+        mi.plateNumber ,mi.out_account_time ,ma.merchantName,
+        cp.vin,
+        cpo.c_brand carBrand,
+        cpo.c_type carType
+		FROM merchant_indent mi inner join merchant_apply ma on ma.acountId=mi.acount_id
+		LEFT JOIN carsok_product cp ON mi.productId = cp.id
+		LEFT JOIN carsok_pruduct_oldcar cpo ON cp.id = cpo.pruduct_id
+		WHERE 1=1
+		<if test="loanStatus=='all'" >
+			and 1=1
+		</if>
+		<if test="loanStatus=='overdue'">
+			and (indentState='repayment' or indentState='lended' ) and  now()>DATE_ADD(mi.out_account_time,INTERVAL mi.deadlineTime DAY)
+		</if>
+		<if test="loanStatus=='repayment'">
+			and indentState='repayment' and now()&lt;=DATE_ADD(mi.out_account_time,INTERVAL mi.deadlineTime DAY)
+		</if>
+		<if test="loanStatus=='lended'">
+			and indentState='lended' and now()&lt;=DATE_ADD(mi.out_account_time,INTERVAL mi.deadlineTime DAY)
+		</if>
+		<if test="loanStatus=='repayment_end'">
+			and indentState='repayment_end'
+		</if>
+		<if test="orderNumber!=null and orderNumber!=''">
+		and indentNumber like  CONCAT('%',#{orderNumber},'%')
+		</if>
+		<if test="merchantName!=null and merchantName !=''">
+		and ma.merchantName like CONCAT('%',#{merchantName},'%')
+		</if>
+		<if test="plateNumber !=null and plateNumber !=''">
+		and mi.plateNumber like CONCAT('%',#{plateNumber},'%')
+		</if>
+		<if test="vin!=null and vin!=''">
+		and cp.vin like CONCAT('%',#{vin},'%')
+		</if>
+		<if test="startTime!=null">
+		and mi.createdTime &gt;=#{startTime}
+		</if>
+		<if test="endTime!=null">
+		and mi.createdTime &lt;=#{endTime}
+		</if>
+		order by mi.createdTime desc
+	</select>
+	<select id="selectOrderCount" resultType="java.util.Map">
+		select    COUNT(*) AS totalIndent,
+		  	   COUNT(IF(mi.indentState='lended' and now()&lt;=DATE_ADD(mi.out_account_time,INTERVAL mi.deadlineTime DAY) ,TRUE,NULL)) AS lendedCount,
+			   COUNT(IF((mi.indentState='repayment' or mi.indentState='lended') and now()>DATE_ADD(mi.out_account_time,INTERVAL mi.deadlineTime DAY) ,true,null)) AS overdueCount,
+			   COUNT(IF(mi.indentState='repayment' and now()&lt;=DATE_ADD(mi.out_account_time,INTERVAL mi.deadlineTime DAY),TRUE,NULL)) AS repaymentCount,
+			   COUNT(IF(mi.indentState='repayment_end',TRUE,NULL)) AS repaymentEndCount,
+			   COUNT(IF(mi.indentState='dismantling',TRUE,NULL)) AS dismantlingCount,
+			   COUNT(IF(mi.indentState='distrution_user_dismantling',TRUE,NULL)) AS distrution_user_dismantling
+			   from merchant_indent mi
+	</select>
+
+	<select id="selectSupervisionList" resultMap="SupervisionMap" resultType="java.util.Map">
+			SELECT
+			mi.indentNumber,
+		   mi.id,
+		   mi.acount_id,
+		mc.personName AS real_name,
+			ca.mobile,
+			ma.merchantName,
+			SUM(
+				IF (
+					mi.indentState IS NOT NULL and mi.obdState='1',
+					mi.judgeMoney,
+					0
+				)
+			) AS stockNumber,
+			COUNT(
+
+				IF (
+		            mi.obdState = '1',
+					TRUE,
+					NULL
+				)
+			) AS totalIndent,
+			COUNT(
+
+				IF (
+					mi.indentState = 'repayment'
+					AND now() > DATE_ADD(
+						mi.out_account_time,
+						INTERVAL mi.deadlineTime DAY
+					),
+					TRUE,
+					NULL
+				)
+			) AS overdueCount
+		FROM
+			merchant_indent mi
+		LEFT JOIN carsok_acount ca ON mi.acount_id = ca.account
+		LEFT JOIN merchant_apply ma ON ma.acountId = mi.acount_id
+		LEFT JOIN   merchant_contactinfo  mc ON mi.acount_id = mc.acountId
+		WHERE
+		mc.roleName='1'
+		<if test="merchantName !=null and merchantName!=''">
+			AND
+			(ma.merchantName LIKE CONCAT('%',#{merchantName},'%') OR ca.real_name LIKE CONCAT('%',#{merchantName},'%'))
+		</if>
+
+		GROUP BY
+			acount_id
+		<if test="regulationType ==1">
+			HAVING totalIndent !=0
+		</if>
+		<if test="regulationType ==2">
+			HAVING totalIndent=0
+		</if>
+	</select>
+
+	<select id="selectIndentCar" resultMap="SupervisionMap" resultType="java.util.Map">
+		SELECT
+		cp.product_no,
+		cpo.c_brand,
+		cpo.c_type,
+		mi.id,
+		mi.out_account_time,
+		mi.judgeMoney,
+		mi.deadlineTime,
+		mi.interest_rate,
+		mi.productId,
+		mi.plateNumber,
+		mi.afterPlateNumber,
+		mi.repaymenTime
+		FROM
+		merchant_indent mi
+		LEFT JOIN carsok_product cp ON mi.productId = cp.id
+		LEFT JOIN carsok_pruduct_oldcar cpo ON cp.id = cpo.pruduct_id
+		WHERE
+		mi.acount_id = #{acountId} AND  mi.obdState ='1'
+		AND mi.out_account_time is not null
+		<if test="cBrand !=null and cBrand!=''">
+		AND   (ma.merchantName LIKE CONCAT('%',#{cBrand},'%') OR cpo.c_brand LIKE CONCAT('%',#{cBrand},'%'))
+		</if>
+	</select>
+	<select id="selectIndentLendedCount" resultType="int">
+	select count(*) from merchant_indent where out_account_time is not null and acount_id=#{param1}
+	</select>
+	
+	<select id="selectOrderByids" parameterType="com.utonw.dealer.api.dto.request.OrderPageRequest" resultMap="MerchantIndentInfo">
+		SELECT * FROM merchant_indent mi where 
+        <choose>
+		    <when test="ids !=null and ids.size()>0">
+			    mi.id in
+			<foreach collection="ids" open="(" close=")" item="item" separator=",">
+	            #{item}
+	        </foreach>
+		    </when>
+		    <otherwise>
+		        1=0
+	    </otherwise>
+		</choose>
+	</select>
+	
+</mapper>

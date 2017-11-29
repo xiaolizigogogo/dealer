@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.utonw.utonerp.mapper.PushTemplateMapper">
+
+	<resultMap id="pushTemplateResultMap" type="com.utonw.dealer.api.entity.PushTemplate">
+        
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="push_template_id" property="pushTemplateId"/>
+        <result column="node_key" property="nodeKey"/>
+        <result column="push_template_content" property="pushTemplateContent"/>
+        <result column="push_object" property="pushObject"/>
+        <result column="status" property="status"/>
+        <result column="update_id" property="updateId"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+	<select id="selectPushTemplate" parameterType="java.lang.String" resultMap="pushTemplateResultMap">
+		SELECT * 
+		FROM push_template
+		WHERE node_key = #{taskDefKey}
+	</select>
+
+</mapper>

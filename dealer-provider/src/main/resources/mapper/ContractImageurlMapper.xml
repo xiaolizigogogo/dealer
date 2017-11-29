@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.utonw.dealer.mapper.ContractImageurlMapper">
+
+	<resultMap id="BaseResultMap" type="com.utonw.dealer.api.entity.ContractImageurl">
+		<id column="id" property="id" />
+		<result column="contractType" property="contracttype" />
+		<result column="imageUrl" property="imageurl" />
+		<result column="updateDate" property="updatedate" />
+		<result column="updateBy" property="updateby" />
+	</resultMap>
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id, contractType AS contracttype, imageUrl AS imageurl, updateDate AS updatedate, updateBy AS updateby
+    </sql>
+
+	<resultMap id="CustomerContractMap" type="com.utonw.dealer.api.dto.response.CustomerContractResponse">
+		<result column="fileName" property="fileName" jdbcType="VARCHAR"/>
+		<result column="fileUrl" property="fileUrl" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<select id="selectCustomerContract" parameterType="java.lang.Integer" resultMap="CustomerContractMap">
+		SELECT
+			CASE
+				WHEN mc.contractType = 'financingContract' THEN '车商融资贷款合同'
+				WHEN mc.contractType = 'guaranteeContract' THEN '联保合同'
+				WHEN mc.contractType = 'exhibitionContract' THEN '展厅转租与APP合同'
+				WHEN mc.contractType = 'authorizationContract' THEN '金融专员授权证书'
+				WHEN mc.contractType = 'CameraPicture' THEN '摄像头'
+				WHEN mc.contractType = 'singlesDeclaration' THEN '法人单身声明'
+				WHEN mc.contractType = 'creditInvestigation' THEN '征信查询授权书'
+				ELSE ''
+			END AS fileName,
+			mc.contractPath AS fileUrl
+		FROM merchant_contract mc
+		<if test="condition !=null and condition != ''">
+			<if test="condition == 1">
+				WHERE mc.acountId = #{accountId}
+			</if>
+			<if test="condition == 2">
+				LEFT JOIN merchant_apply ma ON ma.acountId = mc.acountId
+				LEFT JOIN merchant_indent mi ON ma.acountId = mi.acount_id
+				WHERE mi.id = #{id}
+			</if>
+		</if>
+	</select>
+</mapper>

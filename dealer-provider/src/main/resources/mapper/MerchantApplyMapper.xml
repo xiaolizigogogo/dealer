@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.utonw.dealer.mapper.MerchantApplyMapper">
+
+	<resultMap id="BaseResultMap" type="com.utonw.dealer.api.entity.MerchantApply">
+		<id column="id" property="id" />
+		<result column="acountId" property="acountid" />
+		<result column="merchantName" property="merchantname" />
+		<result column="licenseNumber" property="licensenumber" />
+		<result column="organizationCode" property="organizationcode" />
+		<result column="limitPercentage" property="limitpercentage" />
+		<result column="monthlyInterest" property="monthlyinterest" />
+		<result column="loanLimit" property="loanlimit" />
+		<result column="financingNumber" property="financingnumber" />
+		<result column="carPortNumber" property="carportnumber" />
+		<result column="repertoryNumber" property="repertorynumber" />
+		<result column="scale" property="scale" />
+		<result column="applyDate" property="applydate" />
+		<result column="updateTime" property="updatetime" />
+		<result column="reviewStatus" property="reviewstatus" />
+		<result column="verifyStatus" property="verifystatus" />
+		<result column="remark" property="remark" />
+		<result column="submitState" property="submitstate" />
+		<result column="province" property="province" />
+		<result column="city" property="city" />
+		<result column="district" property="district" />
+		<result column="maximumLoan" property="maximumloan" />
+	</resultMap>
+
+	<resultMap id="ReviewStatusMap" type="com.utonw.dealer.api.dto.response.ReviewStatusResponse">
+		<result column="pass" property="pass" jdbcType="INTEGER"/>
+		<result column="noPass" property="noPass" jdbcType="INTEGER"/>
+		<result column="noReview" property="noReview" jdbcType="INTEGER"/>
+		<result column="total" property="total" jdbcType="INTEGER"/>
+	</resultMap>
+
+	<resultMap id="CustomerListMap" type="com.utonw.dealer.api.dto.response.CustomerListResponse">
+		<result column="acountId" property="accountId" jdbcType="BIGINT"/>
+		<result column="merchantName" property="merchantName" jdbcType="VARCHAR"/>
+		<result column="reviewStatus" property="reviewStatus" jdbcType="VARCHAR"/>
+		<result column="applyDate" property="uploadTime" jdbcType="TIMESTAMP"/>
+		<result column="businessContManager" property="businessContManager" jdbcType="VARCHAR"/>
+		<result column="businessContMob" property="businessContMob" jdbcType="VARCHAR"/>
+		<result column="legalEntityName" property="legalEntityName" jdbcType="VARCHAR"/>
+		<result column="legalEntityMob" property="legalEntityMob" jdbcType="VARCHAR"/>
+		<result column="indentCount" property="indentCount" jdbcType="INTEGER"/>
+		<result column="id" property="id" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<resultMap id="CustomerInfoMap" type="com.utonw.dealer.api.dto.response.CustomerInfoResponse">
+		<result column="merchantName" property="merchantName" jdbcType="VARCHAR"/>
+		<result column="licenseNumber" property="licenseNumber" jdbcType="VARCHAR"/>
+		<result column="organizationCode" property="organizationCode" jdbcType="VARCHAR"/>
+		<result column="carPortNumber" property="carport" jdbcType="INTEGER"/>
+		<result column="repertoryNumber" property="repertory" jdbcType="INTEGER"/>
+		<result column="scale" property="scale" jdbcType="VARCHAR"/>
+		<result column="address" property="address" jdbcType="VARCHAR"/>
+		<result column="merchant_descr" property="introduce" jdbcType="VARCHAR"/>
+		<result column="id" property="id" jdbcType="VARCHAR"/>
+		<result column="indentNumber" property="indentNumber" jdbcType="VARCHAR"/>
+		<result column="merchantAddress" property="merchantAddress" jdbcType="VARCHAR"/>
+		<collection ofType="com.utonw.dealer.api.dto.response.RoleForCustomerInfoResponse" property="roleInfo">
+			<result column="personName" jdbcType="VARCHAR" property="personName"/>
+			<result column="phoneNumber" jdbcType="VARCHAR" property="phoneNumber"/>
+			<result column="roleName" jdbcType="INTEGER" property="roleName"/>
+		</collection>
+	</resultMap>
+
+	<resultMap id="CustomerMerPicMap" type="com.utonw.dealer.api.dto.response.CustomerMerPicResponse">
+		<result column="fileName" property="fileName" jdbcType="VARCHAR"/>
+		<result column="fileUrl" property="fileUrl" jdbcType="VARCHAR"/>
+	</resultMap>
+
+    <!-- 通用查询结果列-->
+    <sql id="Base_Column_List">
+        id, acountId AS acountid, merchantName AS merchantname, licenseNumber AS licensenumber, organizationCode AS organizationcode, limitPercentage AS limitpercentage, monthlyInterest AS monthlyinterest, loanLimit AS loanlimit, financingNumber AS financingnumber, carPortNumber AS carportnumber, repertoryNumber AS repertorynumber, scale, applyDate AS applydate, updateTime AS updatetime, reviewStatus AS reviewstatus, verifyStatus AS verifystatus,remark,submitState AS submitstate,maximumLoan AS maximumloan
+        ,province,city,district
+    </sql>
+
+	<select id="selectReviewStatus" resultMap="ReviewStatusMap">
+		SELECT COUNT(IF(reviewStatus=0,IF(submitState=1,TRUE,NULL),NULL))AS noReview,
+			   COUNT(IF(reviewStatus=1,TRUE,NULL))AS pass,
+			   COUNT(IF(reviewStatus=2,TRUE,NULL))AS noPass,
+			   COUNT(IF(submitState=1,TRUE,NULL)) AS total
+		FROM merchant_apply
+	</select>
+
+	<select id="selectCustomerList" parameterType="java.util.Map" resultMap="CustomerListMap">
+		SELECT  ma.acountId,ma.merchantName,ma.reviewStatus,ma.applyDate,
+				mc.businessContManager,mc.businessContMob,mc.legalEntityMob,mc.legalEntityName,
+				mi.indentCount,ma.id
+		FROM merchant_apply ma
+		LEFT JOIN
+			(
+				SELECT mcLegal.personName AS legalEntityName,
+					   mcLegal.phoneNumber AS legalEntityMob,
+					   mcBusiness.personName AS businessContManager,
+					   mcBusiness.phoneNumber AS businessContMob,
+					   mcBusiness.acountId AS mcBusinessId,
+					   mcLegal.acountId AS mcLegalId
+				FROM merchant_contactinfo mcLegal
+				INNER JOIN merchant_contactinfo mcBusiness
+				WHERE mcLegal.roleName = 1
+				AND mcBusiness.roleName = 3
+			) mc ON mc.mcBusinessId = ma.acountId AND mc.mcLegalId = ma.acountId
+		LEFT JOIN
+			(
+				SELECT COUNT(1) indentCount,mi.acount_id,mi.indentNumber
+				FROM merchant_indent mi where mi.out_account_time is not null
+				GROUP BY mi.acount_id
+			) mi ON mi.acount_id = ma.acountId
+		<where>
+			<if test="list.size()>0">
+				AND ma.id IN <foreach collection="list" item="item" separator="," open="(" close=")">#{item}</foreach>
+			</if>
+		  <if test="merchantName != null and merchantName != ''">
+			AND ma.merchantName LIKE CONCAT('%', #{merchantName}, '%')
+		  </if>
+		  <if test="personName != null and personName != ''">
+			AND mc.legalEntityName LIKE CONCAT('%', #{personName}, '%')
+		  </if>
+		  <if test="phoneNumber != null and phoneNumber != ''">
+			AND mc.legalEntityMob LIKE CONCAT('%', #{phoneNumber}, '%')
+		  </if>
+		</where>
+		GROUP BY ma.acountId
+		ORDER BY 4 DESC
+	</select>
+	<select id="selectCustomerApplyList" parameterType="java.util.Map" resultMap="CustomerListMap">
+		SELECT  ma.acountId,ma.merchantName,ma.reviewStatus,ma.applyDate,
+				mc.businessContManager,mc.businessContMob,mc.legalEntityMob,mc.legalEntityName,
+				mi.indentCount,ma.id
+		FROM merchant_apply ma
+		LEFT JOIN
+			(
+				SELECT mcLegal.personName AS legalEntityName,
+					   mcLegal.phoneNumber AS legalEntityMob,
+					   mcBusiness.personName AS businessContManager,
+					   mcBusiness.phoneNumber AS businessContMob,
+					   mcBusiness.acountId AS mcBusinessId,
+					   mcLegal.acountId AS mcLegalId
+				FROM merchant_contactinfo mcLegal
+				INNER JOIN merchant_contactinfo mcBusiness
+				WHERE mcLegal.roleName = 1
+				AND mcBusiness.roleName = 3
+			) mc ON mc.mcBusinessId = ma.acountId AND mc.mcLegalId = ma.acountId
+		LEFT JOIN
+			(
+				SELECT COUNT(1) indentCount,mi.acount_id,mi.indentNumber
+				FROM merchant_indent mi where mi.out_account_time is not null
+				GROUP BY mi.acount_id
+			) mi ON mi.acount_id = ma.acountId
+		<where>
+			<if test="list.size()>0">
+				AND ma.id IN <foreach collection="list" item="item" separator="," open="(" close=")">#{item}</foreach>
+			</if>
+		  <if test="merchantName != null and merchantName != ''">
+			AND ma.merchantName LIKE CONCAT('%', #{merchantName}, '%')
+		  </if>
+		  <if test="personName != null and personName != ''">
+			AND mc.legalEntityName LIKE CONCAT('%', #{personName}, '%')
+		  </if>
+		  <if test="phoneNumber != null and phoneNumber != ''">
+			AND mc.legalEntityMob LIKE CONCAT('%', #{phoneNumber}, '%')
+		  </if>
+		  <if test="reviewStatus == 0" >
+			AND ma.reviewStatus = #{reviewStatus}
+		  </if>
+		  <if test="reviewStatus != 3 and reviewStatus != null and reviewStatus != '' ">
+			AND ma.reviewStatus = #{reviewStatus}
+		  </if>
+		</where>
+		ORDER BY 4 DESC
+	</select>
+	<select id="selectCustomerInfo" parameterType="java.util.Map" resultMap="CustomerInfoMap">
+		SELECT ma.merchantName,ma.licenseNumber,ma.organizationCode,IFNULL(ma.carPortNumber,0) carPortNumber,
+		IFNULL(ma.repertoryNumber,0) repertoryNumber,ma.scale,mc.personName,mc.phoneNumber,mc.roleName,
+		CONCAT(ca.province,ca.city,ca.merchant_address) AS address,ca.merchant_descr,ma.id,mr.detailed_address AS merchantAddress
+				<if test="id != null and id != '' ">
+					,mi.indentNumber
+				</if>
+		FROM merchant_apply ma
+		INNER JOIN carsok_acount ca ON ca.account_code = ma.acountId
+		INNER JOIN
+			(
+				SELECT mc.personName,mc.phoneNumber,mc.roleName,mc.acountId
+				FROM merchant_contactinfo mc
+			) mc ON mc.acountId = ma.acountId
+		<if test="accountId !=null and accountId !='' ">
+				LEFT JOIN  merchant_region mr on mr.apply_id = ma.id
+				WHERE ma.acountId = #{accountId}
+				AND mr.type = 'dealer'
+		</if>
+
+		<if test="id != null and id != '' ">
+			INNER JOIN merchant_indent mi ON mi.acount_id = ma.acountId
+			LEFT JOIN  merchant_region mr on mr.apply_id = ma.id
+			AND mr.type = 'offline_staff'
+			AND mi.id = #{id}
+		</if>
+	</select>
+
+	<select id="selectCustomerMerPic" parameterType="java.lang.Integer" resultMap="CustomerMerPicMap">
+		SELECT
+		CASE
+		WHEN mp.fileTitle='idCardUrls' THEN '夫妻双方身份证'
+		WHEN mp.fileTitle='widdingOrDiv' THEN '法定代表人结婚证（离婚证）'
+		WHEN mp.fileTitle='bookletUrls' THEN '法定代表人户口本'
+		WHEN mp.fileTitle='stateUrls' THEN '房产证或购房合同'
+		WHEN mp.fileTitle='justetterUrls' THEN '征信'
+		WHEN mp.fileTitle='shopCardUrls' THEN '营业执照复印件'
+		WHEN mp.fileTitle='legalCardUrls' THEN '法人及配偶身份证'
+		WHEN mp.fileTitle='houseUrls' THEN '场地租赁合同'
+		WHEN mp.fileTitle='sitePicUrls' THEN '场地照片'
+		WHEN mp.fileTitle='waterUrls' THEN '6个月流水'
+		WHEN mp.fileTitle='staffUrls' THEN '现有员工身份证和联系方式'
+		WHEN mp.fileTitle='doorPicUrls' THEN '门头照片'
+		WHEN mp.fileTitle='exhibitionPicUrls' THEN '展厅内照片'
+		WHEN mp.fileTitle='backgroundPicUrls' THEN '背景墙照片'
+		WHEN mp.fileTitle='capitalVerification' THEN '验资报告复印件'
+		WHEN mp.fileTitle='frgdID' THEN '股东身份证'
+		WHEN mp.fileTitle='zcxzHardCopy' THEN '公司章程及修正案复印件'
+		WHEN mp.fileTitle='gcSynopsis' THEN '各高层管理人员简介'
+		WHEN mp.fileTitle='yearReportForms' THEN '近三年财务年报表'
+		WHEN mp.fileTitle='monthReportForms' THEN '近三个月财务月报和本月财报科目明细'
+		WHEN mp.fileTitle='monthAchievement' THEN '业务台账'
+		WHEN mp.fileTitle='loanBankFlow' THEN '放款银行卡流水'
+		WHEN mp.fileTitle='receivingBankFlow' THEN '收款银行卡流水'
+		WHEN mp.fileTitle='receivedPayments' THEN '资产处置台账数据及该款项的回款账户及流水'
+		WHEN mp.fileTitle='enterpriseStream' THEN '企业主要对公流水'
+		WHEN mp.fileTitle='customerCase' THEN '客户案例'
+		WHEN mp.fileTitle='mainBusiness' THEN '主营业务操作流程'
+		WHEN mp.fileTitle='manageProcedure' THEN '风控管理及流程'
+		WHEN mp.fileTitle='vehicleEvaluationCriteria' THEN '车辆评估标准'
+		WHEN mp.fileTitle='partner' THEN '业务合作方准入要求'
+		WHEN mp.fileTitle='productMix' THEN '产品大纲'
+		WHEN mp.fileTitle='managementSystem' THEN '车库管理制度'
+		WHEN mp.fileTitle='businessLedger' THEN '月业绩情况总汇表'
+		WHEN mp.fileTitle='companyProfile' THEN '公司简介'
+		WHEN mp.fileTitle='organizationCode' THEN '组织机构代码证复印件'
+		WHEN mp.fileTitle='taxRegistration' THEN '税务登记证复印件'
+		WHEN mp.fileTitle='actualControllerCreditReport' THEN '实际控制人信用报告'
+		WHEN mp.fileTitle='enterpriseCreditReport' THEN '企业信用报告'
+		WHEN mp.fileTitle='corporateProfitModel' THEN '企业盈利模式'
+		WHEN mp.fileTitle='assetProof' THEN '法人及股东相关资产证明'
+		ELSE ''
+		END AS fileName,mp.fileUrl AS fileUrl
+		FROM merchant_apply ma
+		INNER JOIN merchant_picture mp ON mp.acountId = ma.acountId
+		<if test="condition !=null and condition != ''">
+			<if test="condition == 1">
+				AND ma.acountId = #{accountId}
+			</if>
+			<if test="condition == 2">
+				INNER JOIN merchant_indent mi ON ma.acountId = mi.acount_id
+				AND mi.id = #{id}
+			</if>
+		</if> 
+		order by   mp.fileTitle
+		</select>
+		<!-- 
+		<select id="selectMerchantName" parameterType="java.lang.String"type="MerchantApply">
+			select merchantName from merchant_apply
+			 where acountid={id}
+		</select>
+		 -->
+		<select id="selectMerchantName" parameterType="java.lang.String" resultType="MerchantApply">
+			select merchantName from merchant_apply
+			 where acountid={id}
+		</select>
+		
+		
+		<select id="merchantApplylist" parameterType="java.lang.String" resultMap="BaseResultMap">
+			select * from merchant_apply
+			 where acountid=#{accountId}
+		</select>
+
+	<select id="selectCustomerAudioAndAddress" parameterType="java.lang.Integer" resultMap="CustomerMerPicMap">
+		SELECT
+		mv.videoTitle AS fileName,
+		mv.videoUrl AS fileUrl
+		FROM merchant_apply ma INNER JOIN merchant_video mv on mv.applyId = ma.id
+		<if test="condition !=null and condition != ''">
+			<if test="condition == 1">
+				AND ma.acountId = #{accountId}
+			</if>
+		</if>
+		UNION
+		SELECT
+		'详细地址' AS fileName,
+		mr.detailed_address AS fileUrl
+		FROM
+		merchant_apply ma
+		INNER JOIN merchant_region mr ON mr.apply_id = ma.id and mr.type='dealer'
+		<if test="condition !=null and condition != ''">
+			<if test="condition == 1">
+				AND ma.acountId = #{accountId}
+			</if>
+		</if>
+		
+	</select>
+	
+	<!-- 根据主键查询申请信息 -->
+	<select id="selectMerchantApplyById" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select * 
+		  from merchant_apply
+		 where id = {applyId}
+	</select>
+	<!-- 查询客户申请列表 -->
+	<select id="selectApplyByCondition" parameterType="com.utonw.dealer.api.dto.request.MerchantRequest" resultMap="CustomerListMap">
+			SELECT  ma.acountId,ma.merchantName,ma.reviewStatus,ma.applyDate,
+				mc.businessContManager,mc.businessContMob,mc.legalEntityMob,mc.legalEntityName,
+				mi.indentCount,ma.id
+		FROM merchant_apply ma
+		LEFT JOIN
+			(
+				SELECT mcLegal.personName AS legalEntityName,
+					   mcLegal.phoneNumber AS legalEntityMob,
+					   mcBusiness.personName AS businessContManager,
+					   mcBusiness.phoneNumber AS businessContMob,
+					   mcBusiness.acountId AS mcBusinessId,
+					   mcLegal.acountId AS mcLegalId
+				FROM merchant_contactinfo mcLegal
+				INNER JOIN merchant_contactinfo mcBusiness
+				WHERE mcLegal.roleName = 1
+				AND mcBusiness.roleName = 3
+			) mc ON mc.mcBusinessId = ma.acountId AND mc.mcLegalId = ma.acountId
+		LEFT JOIN
+			(
+				SELECT COUNT(1) indentCount,mi.acount_id,mi.indentNumber
+				FROM merchant_indent mi where mi.out_account_time is not null
+				GROUP BY mi.acount_id
+			) mi ON mi.acount_id = ma.acountId
+		where 1=1
+		  <if test="searchKey != null and searchKey != ''">
+			AND ( ma.merchantName LIKE CONCAT('%', #{searchKey}, '%') or ma.acountId LIKE CONCAT('%', #{searchKey},'%'))
+		  </if>
+		GROUP BY ma.acountId
+		ORDER BY 4 DESC
+		
+	</select>
+
+	<select id="queryCreditInfo" parameterType="java.lang.String" resultType="java.util.Map">
+		SELECT ma.idcard,mc.personName,ma.merchantName,mc.phoneNumber,ma.acountId
+		FROM merchant_apply ma
+		INNER JOIN merchant_contactinfo mc ON mc.acountId = ma.acountId
+		WHERE ma.id = #{customerId}
+		AND mc.roleName = '1'
+		GROUP BY ma.id
+	</select>
+
+</mapper>

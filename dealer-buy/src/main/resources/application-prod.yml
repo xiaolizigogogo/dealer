@@ -1,0 +1,38 @@
+server:
+      port: 8080
+      tomcat:
+        max-threads: 800                # tomcat最大线程数，默认为200
+        uri-encoding: UTF-8             # tomcat的URI编码
+        basedir: /springboot-tomcat-tmp # 存放Tomcat的日志、Dump等文件的临时文件夹，默认为系统的tmp文件夹（如：C:\Users\Shanhy\AppData\Local\Temp）
+        accesslog:
+          enabled: true                 # 打开Tomcat的Access日志，并可以设置日志格式的方法：
+                                        #server.tomcat.access-log-pattern=
+                                        # accesslog目录，默认在basedir/logs
+                                        #server.tomcat.accesslog.directory=
+spring:
+  http:
+    encoding:
+      force: true
+  dubbo:
+    application:
+      name : buyer-consumer
+    registry:
+      address: zookeeper://uton.dealer.zookeeper1.com:2181?backup=uton.dealer.zookeeper2.com:2181,uton.dealer.zookeeper3.com:2181
+#      file: /home/wangyj/dubbo_registy/consumer
+    scan: com.utonw
+    consumer:
+      timeout: 50000
+    provider:
+      timeout: 50000
+  redis:
+    host: uton.dealer.redis.com
+    port: 6379
+    password: 123456
+logging:
+  path: /springboot-tomcat-tmp          # 日志文件目录
+  file: dealer-web.log                       # 日志文件名称，默认为spring.log
+  config: classpath:logback.xml
+
+carsokApi: http://carsok.utonw.com/carsokApi/login.do
+profile: prod_envrimont
+
