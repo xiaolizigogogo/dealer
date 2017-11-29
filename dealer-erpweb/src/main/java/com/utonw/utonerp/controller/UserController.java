@@ -1,5 +1,31 @@
 package com.utonw.utonerp.controller;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSONObject;
 import com.maiqianweng.service.AttachmentParentInfoService;
@@ -14,24 +40,13 @@ import com.utonw.dealer.api.service.erp.IUserService;
 import com.utonw.dealer.api.util.erp.Constants;
 import com.utonw.dealer.api.util.erp.PageModel;
 import com.utonw.utonbase.core.erpcommon.config.ParamterControl;
-import com.utonw.utonbase.core.erpcommon.controller.BaseController;
-import com.utonw.utonbase.core.erpcommon.utils.*;
+import com.utonw.utonbase.core.erpcommon.utils.CacheUtil;
+import com.utonw.utonbase.core.erpcommon.utils.PasswordTools;
+import com.utonw.utonbase.core.erpcommon.utils.SpringUtils;
+import com.utonw.utonbase.core.erpcommon.utils.UUIDGenerator;
 import com.utonw.utonbase.core.util.DozerMapperUtil;
 import com.utonw.utonerp.common.utils.SysUserUtil;
 import com.utonw.utonerp.core.VerifyExecutor;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 /**
  * 用户控制类 Created by user on 2015/5/22.

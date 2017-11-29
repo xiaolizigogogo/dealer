@@ -265,11 +265,6 @@
             <version>2.9.0</version>
         </dependency>
         <dependency>
-            <groupId>com.utonw</groupId>
-            <artifactId>dealer-api</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
             <groupId>com.github.miemiedev</groupId>
             <artifactId>mybatis-paginator</artifactId>
             <version>1.2.15</version>
@@ -340,39 +335,16 @@
             <version>1.4.7</version>
         </dependency>
 	</dependencies>
-    <repositories>
-        <repository>
-            <id>internal-nexus</id>
-            <name>internal-nexus</name>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <url>http://120.25.126.86:8081/nexus/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>internal-nexus-3rd</id>
-            <name>internal-nexus-3rd</name>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <url>http://120.25.126.86:8081/nexus/content/repositories/thirdparty/</url>
-        </repository>
-        <repository>
-            <id>internal-nexus-springmilestone</id>
-            <name>internal-nexus-springmilestone</name>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <url>http://120.25.126.86:8081/nexus/content/repositories/springmilestone/</url>
-        </repository>
-    </repositories>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.4.11</version>
+				<configuration>
+					<skipDockerBuild>true</skipDockerBuild>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

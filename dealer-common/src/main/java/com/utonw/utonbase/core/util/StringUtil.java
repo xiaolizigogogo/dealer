@@ -1,4 +1,4 @@
-package com.utonw.utonerp.core.util;
+package com.utonw.utonbase.core.util;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import javax.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package com.utonw.utonbase.core.erpcommon.controller;
+package com.utonw.utonerp.controller;
 
 import com.utonw.dealer.api.entity.erp.User;
 import com.utonw.dealer.api.util.erp.Constants;

@@ -1,7 +1,5 @@
 package com.utonw.utonbase.core.erpcommon.utils;
 
-import com.utonw.dealer.api.util.erp.Constants;
-
 import java.util.HashMap;
 import java.util.Map;
 
